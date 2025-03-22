@@ -1,6 +1,6 @@
 # Lista (Arreglo)
 # Modificable y ordenada
-numeros_de_emergencia= ['104', '9574847782', '937837473', '054226845']
+numeros_de_emergencia = ['104', '9574847782', '937837473', '054226845']
 
 print(numeros_de_emergencia)
 print(numeros_de_emergencia[0])
@@ -40,7 +40,7 @@ numeros_de_emergencia.clear()
 # Las listas pueden tener diferentes tipos de datos dentro de ella
 miscelaneo = ['Roberto', '2015-02-05', False, 10, 14.5, -10]
 
-ejercicio_1 = [1,'Luis', 'Marcona', False, 80, 20.5, [4, 5, 6]]
+ejercicio_1 = [1, 'Luis', 'Marcona', False, 80, 20.5, [4, 5, 6]]
 # Como hago para obtener a 'Marcona'
 resultado_1 = ejercicio_1[2]
 
@@ -62,7 +62,7 @@ print(resultado_2)
 print(resultado_3)
 print(resultado_4)
 
-miscelaneo[0]='99999999'
+miscelaneo[0] = '99999999'
 
 # Tupla
 # Son ordenadas PERO no son editables
@@ -76,7 +76,7 @@ print(meses[-1])
 # Si en la tupla tenemos una lista, esa lista si se puede modificar
 # meses[0] = 'Diciembre'
 
-data = ('Juan', 'Roberto', [1,2,3, ['Eduardo', 'Arnold']])
+data = ('Juan', 'Roberto', [1, 2, 3, ['Eduardo', 'Arnold']])
 
 # Como hago para obtener Eduardo
 resultado = data[2][3][0]
@@ -92,15 +92,15 @@ persona = {
     'idiomas': ('Español', 'Ingles'),
     'habilidades': [
         {
-            'nombre':'Honestidad',
-            'importancia':'Alta'
+            'nombre': 'Honestidad',
+            'importancia': 'Alta'
         },
         {
-            'nombre':'Generocidad',
+            'nombre': 'Generocidad',
             'importancia': 'Media'
         },
         {
-            'nombre':'Empatia',
+            'nombre': 'Empatia',
             'importancia': 'Media Alta'
         }
     ]
@@ -109,10 +109,10 @@ persona = {
 print(persona)
 
 # Editar llaves existentes
-persona['nombre']='Shrek'
+persona['nombre'] = 'Shrek'
 print(persona)
 # La llave que quiero editar no existe, se creara
-persona['nacionalidad']='Peruano'
+persona['nacionalidad'] = 'Peruano'
 print(persona)
 
 del persona['apellido']
@@ -128,3 +128,15 @@ print(persona)
 # persona['idiomas'].append('Frances')
 
 persona['hobbies'].append('Trabajar')
+
+# Conjunto (Set)
+# Desordenada y es editable
+planetas = {'Tierra', 'Marte', 'Jupiter', 'Saturno'}
+
+planetas.add('Urano')
+
+print(planetas)
+
+# in > sirve para poder ubicar un elemento dentro de una coleccion de dato, una lista, tupla o conjunto
+print('Tierra' in planetas)
+print('Pluton' in planetas)
