@@ -56,7 +56,19 @@ INSERT INTO inscripciones (estudiante_id, curso_id, fecha_inscripcion) VALUES
 
 
 -- Listar los estudiantes con los cursos que tienen
+SELECT es.nombre, cur.nombre 
+FROM estudiantes AS es 
+    INNER JOIN inscripciones AS ins ON es.id = ins.estudiante_id 
+    INNER JOIN cursos AS cur ON ins.curso_id = cur.id;
 
 -- Muestren todos los estudiantes incluyendo aquellos que no estan incritos en ningun curso
+SELECT es.nombre, cur.nombre 
+FROM estudiantes AS es 
+    LEFT JOIN inscripciones AS ins ON es.id = ins.estudiante_id 
+    LEFT JOIN cursos AS cur ON ins.curso_id = cur.id;
 
 -- Muestren todos los cursos y los estudiantes que estan incritos en ellos
+SELECT es.nombre, cur.nombre 
+FROM estudiantes AS es 
+    INNER JOIN inscripciones AS ins ON es.id = ins.estudiante_id 
+    RIGHT JOIN cursos AS cur ON ins.curso_id = cur.id;
