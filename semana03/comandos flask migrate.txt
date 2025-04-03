@@ -1,0 +1,2 @@
+flask db init                   > inicializa el proyecto con migraciones de sqlalchemy
+flask db migrate -m "MENSAJE"   > crea una migracion con todos los cambios que hemos realizado comparandolo con la base de datos
