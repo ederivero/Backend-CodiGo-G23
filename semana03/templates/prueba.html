@@ -1,17 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
+{# cuando queremos reutilizar la informacion de otra plantilla usamos la etiqueta extends y podemos ingresar data en sus blocks definidos#}
+{% extends 'base.html' %}
+
+{% block titulo %}Inicio{% endblock %}
+
+{% block contenido %}
     <p>
       Bienvenidos a mi aplicacion de Flask donde podras encontrar mucha
       informacion
     </p>
     <p>Hola, mi nombre es {{ nombre_desarrollador }}</p>
 
+    <p class="texto-rojo">Este texto deberia estar en rojo</p>
+    
+    <img src="{{ url_for('static', filename='images/mascota.jpg')}}" alt="mascota" height="100px"/>
+    
     <p>Y mis hobbies son:</p>
     <ul>
       {# Si quiero iterar una lista, tupla o alguna coleccion de datos puedo
@@ -20,5 +22,4 @@
         <li>{{ hobby }}</li>
       {% endfor %}
     </ul>
-  </body>
-</html>
+{% endblock %}
