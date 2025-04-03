@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <p>
+      Bienvenidos a mi aplicacion de Flask donde podras encontrar mucha
+      informacion
+    </p>
+    <p>Hola, mi nombre es {{ nombre_desarrollador }}</p>
+
+    <p>Y mis hobbies son:</p>
+    <ul>
+      {# Si quiero iterar una lista, tupla o alguna coleccion de datos puedo
+      usar un for#} 
+      {% for hobby in hobbies %}
+        <li>{{ hobby }}</li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
