@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 # Esta clase nos va a ayudar a poder gestionar las migraciones de nuestro proyecto con la bd
 from flask_migrate import Migrate
 from sqlalchemy import Column, types
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:root@localhost:5432/prueba_flask'
@@ -25,6 +26,11 @@ class Usuario(db.Model):
     # para modificar el nombre de la table en la base de datos 
     __tablename__ ='usuarios'
 
+
+class UsuarioSerializador(SQLAlchemyAutoSchema):
+    class Meta:
+        # model es el atributo en el cual usara SQLAlchemy para poder mapear las columnas y sus propiedas como tipo de dato, si puede ser nulo, es unico, etc
+        model = Usuario
 
 @app.route('/')
 def inicio():
@@ -76,6 +82,33 @@ def listarUsuarios():
         'message': 'Usuarios encontrados existosamente',
         'content': usuarios
     }
+
+@app.route('/usuario/<int:id>', methods=['GET','PUT', 'DELETE'])
+def gestionarUsuario(id):
+    metodo = request.method
+
+    if metodo == 'GET':
+        # filter_by hace solamente busqueda por valores exactos, no podemos hacer 'in', <, >, etc
+        # db.session.query(Usuario).filter_by(id = id)
+
+        # SELECT * FROM usuarios WHERE id =... LIMIT 1;
+        usuario_encontrado = db.session.query(Usuario).filter(Usuario.id == id).first()
+
+        if usuario_encontrado is None:
+            return {
+                'message':'Usuario no existe'
+            }, 404
+        
+        else:
+            # dump > convierte la instancias de la base de datos a un diccionario con data que pueda ser devuelta al frontend
+            resultado = UsuarioSerializador().dump(usuario_encontrado)
+            
+            return{
+                'content': resultado
+            }
+
+
+
 
 # para tener una mayor seguridad de que la instancia esta en el archivo principal
 if __name__ == '__main__':
