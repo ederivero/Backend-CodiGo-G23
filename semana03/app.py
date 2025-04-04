@@ -2,7 +2,9 @@ from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 # Esta clase nos va a ayudar a poder gestionar las migraciones de nuestro proyecto con la bd
 from flask_migrate import Migrate
-from sqlalchemy import Column, types
+from sqlalchemy import Column, types, ForeignKey
+from sqlalchemy.orm import relationship
+
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from marshmallow.exceptions import ValidationError
 
@@ -24,14 +26,49 @@ class Usuario(db.Model):
     fechaNacimiento = Column(name='fecha_nacimiento', type_=types.DateTime)
     habilitado = Column(type_=types.Boolean, default=True)
 
+    # la relationship sirve para indicarle a sqlalchemy como se puede conectar este modelo de usuarios con otro modelo
+    # backref hara que se cree un atributo en la otra clase (Direccion) para poder acceder a la relacion de una manera rapida
+    direcciones = relationship('Direccion', backref='usuario')
+
     # para modificar el nombre de la table en la base de datos 
     __tablename__ ='usuarios'
 
+class Direccion(db.Model):
+    id = Column(type_=types.Integer, primary_key=True, autoincrement=True)
+    calle = Column(type_=types.Text, nullable=False)
+    numero = Column(type_=types.Text)
+    referencia = Column(type_=types.Text)
+    predeterminada = Column(type_=types.Boolean, default=False)
+    # RELACIONES
+    usuarioId = Column(ForeignKey(column='usuarios.id'), nullable=False, name='usuario_id')
+
+    __tablename__='direcciones'
+
+
+from marshmallow_sqlalchemy import auto_field
+from marshmallow import fields
+
+
+class DireccionSerializador(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Direccion
+        # marshmallow al comienzo no hace seguimiento a las relaciones, sino que si nosotros lo deseamos tenemos que agregar esta propiedad
+        include_fk = True
 
 class UsuarioSerializador(SQLAlchemyAutoSchema):
+    # si a mi serializador de la tabla quiero agregar un campo personalizado que no tenga nada que ver con la tabla entonces puedo utilizar un field de marshmallow
+    pruebita = fields.String(dump_default='xyz', dump_only=True)
+
+    # sin embargo si quiero agregar un atributo que sea parte de una columna de la base de datos entonces usare el auto_field
+    # dump_only > ese field solamente se va a utilizar para cuando nostros querramos convertir la info, es decir, usar el metodo dump mas no cuando vayamos a hacer uso del load
+    # load_only > hacer todo lo contrario de dump_only
+    direcciones = fields.List(fields.Nested(DireccionSerializador), dump_only=True)
     class Meta:
         # model es el atributo en el cual usara SQLAlchemy para poder mapear las columnas y sus propiedas como tipo de dato, si puede ser nulo, es unico, etc
         model = Usuario
+        # este atributo nos permite agregar las relationships en nuestro serializador pero solamente mostrara los id's que estan relacionados con este registro 
+        # include_relationships = True
+
 
 @app.route('/')
 def inicio():
@@ -100,8 +137,10 @@ def gestionarUsuario(id):
             return {
                 'message':'Usuario no existe'
             }, 404
-        
+
         else:
+
+            print(usuario_encontrado.direcciones)
             # dump > convierte la instancias de la base de datos a un diccionario con data que pueda ser devuelta al frontend
             resultado = UsuarioSerializador().dump(usuario_encontrado)
 
@@ -173,6 +212,41 @@ def devolverUsuarioFrontend():
     usuarios = db.session.query(Usuario).all()
     return render_template('listar_usuarios.html', usuarios=usuarios)
 
+
+
+@app.route('/direccion', methods = ['POST'])
+def crearDireccion():
+    # usando el serializador validar que la informacion entrante sea valida para luego poder guardarla en la base de datos en la tabla direcciones, si no se puede, retornar un mensaje de error y el detalle
+    data = request.get_json()
+    try:
+        data_validada = DireccionSerializador().load(data)
+        # Si tengo una funcion y esta funcion recibe los mismos parametros que tengo en mi diccionario, entonces lo puedo pasar usando el **
+        nueva_direccion = Direccion(**data_validada)
+        db.session.add(nueva_direccion)
+
+        db.session.commit()
+
+        # Ahora que ya  tenemos guardada la direccion vamos a obtener su informacion para retornarla al cliente
+        resultado = DireccionSerializador().dump(nueva_direccion)
+        return {
+            'message':'Direccion agregada exitosamente',
+            'content':resultado
+        },201
+    except ValidationError as error:
+        return {
+            'message': 'Error al crear la direccion',
+            'content': error.args
+        },400
+
+@app.route('/direcciones/<int:usuarioId>', methods = ['GET'])
+def devolverDireccionesDeUsuario(usuarioId):
+    direcciones = db.session.query(Direccion).filter(Direccion.usuarioId == usuarioId).all()
+    
+    respuesta = DireccionSerializador().dump(direcciones, many=True)
+
+    return {
+        'content': respuesta
+    }
 
 
 # para tener una mayor seguridad de que la instancia esta en el archivo principal
