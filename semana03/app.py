@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from sqlalchemy import Column, types
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from marshmallow.exceptions import ValidationError
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:root@localhost:5432/prueba_flask'
@@ -66,18 +67,19 @@ def listarUsuarios():
     # SELECT * FROM usuarios;
     resultado = db.session.query(Usuario).all()
 
-    usuarios = [] # [{id: 1, nombre: 'Eduardo', correo: 'asda@g.com', fechaNacimiento:'...'}]
-    for usuario in resultado:
-        usuarios.append({
-            "id": usuario.id,
-            "nombre": usuario.nombre,
-            "correo": usuario.correo,
-            # https://www.programiz.com/python-programming/datetime/strftime
-            "fechaNacimiento": usuario.fechaNacimiento.strftime('%Y-%m-%d'),
-            "habilitado": usuario.habilitado
-        })
+    # usuarios = [] # [{id: 1, nombre: 'Eduardo', correo: 'asda@g.com', fechaNacimiento:'...'}]
+    # for usuario in resultado:
+    #     usuarios.append({
+    #         "id": usuario.id,
+    #         "nombre": usuario.nombre,
+    #         "correo": usuario.correo,
+    #         # https://www.programiz.com/python-programming/datetime/strftime
+    #         "fechaNacimiento": usuario.fechaNacimiento.strftime('%Y-%m-%d'),
+    #         "habilitado": usuario.habilitado
+    #     })
 
-    print(usuarios)
+    # cuando quiero serializar o convertir una lista de instancias tengo que pasarle el parametro 'many'
+    usuarios = UsuarioSerializador().dump(resultado, many=True)
     return {
         'message': 'Usuarios encontrados existosamente',
         'content': usuarios
@@ -102,11 +104,74 @@ def gestionarUsuario(id):
         else:
             # dump > convierte la instancias de la base de datos a un diccionario con data que pueda ser devuelta al frontend
             resultado = UsuarioSerializador().dump(usuario_encontrado)
-            
+
             return{
                 'content': resultado
             }
 
+    elif metodo == 'PUT':
+        usuario_encontrado = db.session.query(Usuario).filter(Usuario.id == id).first()
+
+        if usuario_encontrado is None:
+            return {
+                'message':'Usuario no existe'
+            }, 404
+        
+        data = request.get_json()
+        # Asi como el serializador me sirve para convertir las instancias a dict, tbn puedo usarlo para validar si la informacion es correcta o no
+        # Si la data al validarse es incorrecta, emitira un error
+        try:
+            data_validada = UsuarioSerializador().load(data)
+
+            print(data_validada)
+            # una forma de hacer un update es con el usuario ya encontrado
+            usuario_encontrado.nombre = data_validada.get('nombre', usuario_encontrado.nombre)
+            usuario_encontrado.correo = data_validada.get('correo', usuario_encontrado.correo)
+            usuario_encontrado.fechaNacimiento = data_validada.get('fechaNacimiento', usuario_encontrado.fechaNacimiento)
+
+            # para que los cambios persistan en el tiempo
+            db.session.commit()
+
+            # el otro metodo para hacer una actualizacion
+            #synchronize_session > sirve para indicar como queremos que realice la actualizacion, que se realice de manera automatica, que haga una evaluacion antes de la actualizacion para evitar errores o que retorne los errores
+            # la ventaja de hacerlo de esta manera es que no tenemos que hacer un commit, ya que lo hace dentro de la misma actualizacion
+            # https://docs.sqlalchemy.org/en/20/orm/queryguide/dml.html#orm-queryguide-update-delete-sync
+            # db.session.query(Usuario).filter(Usuario.id == id).update({
+            #     Usuario.nombre: 'bernardo', 
+            #     Usuario.correo: 'correo1@correo.com'
+            #     }, synchronize_session='evaluate')
+            
+            # ahora convierto mi usuario actualizado a un diccionario
+            resultado = UsuarioSerializador().dump(usuario_encontrado)
+            return {
+                'message':'Usuario actualizado exitosamente',
+                'content': resultado
+            }
+        except ValidationError as error:
+            return {
+                'message':'Error al actualizar el usuario',
+                'content': error.args
+            },400
+
+    elif metodo == 'DELETE':
+        elementos_eliminados = db.session.query(Usuario).filter(Usuario.id == id).delete()
+        
+        # Para la eliminacion tenemos que agregar el commit para que lo cambios queden de manera permanente en la bd
+        db.session.commit()
+
+        if elementos_eliminados == 0:
+            return {
+                'message':'El usuario no existe'
+            }, 404
+        else:
+            return {
+                'message': 'Usuario eliminado exitosamente'
+            }
+
+@app.route('/usuario-frontend', methods = ['GET'])
+def devolverUsuarioFrontend():
+    usuarios = db.session.query(Usuario).all()
+    return render_template('listar_usuarios.html', usuarios=usuarios)
 
 
 

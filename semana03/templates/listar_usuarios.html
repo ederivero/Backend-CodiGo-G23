@@ -1,0 +1,31 @@
+{% extends  'base.html' %}
+{% block titulo %}Usuarios{% endblock%}
+{% block contenido %}
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">id</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Correo</th>
+        <th scope="col">Fecha de Nacimiento</th>
+        <th scope="col">Habilitado</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for usuario in usuarios%}
+        <tr>
+            <th>{{ usuario.id }}</th>
+            <td>{{ usuario.nombre }}</td>
+            <td>{{ usuario.correo }}</td>
+            <td>{{ usuario.fechaNacimiento }}</td>
+            <td>{% if usuario.habilitado%}
+                ✅
+                {% else %}
+                ❌
+                {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+{% endblock%}
