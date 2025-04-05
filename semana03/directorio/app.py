@@ -7,6 +7,7 @@ from sqlalchemy.orm import relationship
 
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from marshmallow.exceptions import ValidationError
+from marshmallow import fields
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:root@localhost:5432/prueba_flask'
@@ -43,11 +44,6 @@ class Direccion(db.Model):
     usuarioId = Column(ForeignKey(column='usuarios.id'), nullable=False, name='usuario_id')
 
     __tablename__='direcciones'
-
-
-from marshmallow_sqlalchemy import auto_field
-from marshmallow import fields
-
 
 class DireccionSerializador(SQLAlchemyAutoSchema):
     class Meta:
