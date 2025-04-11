@@ -3,12 +3,16 @@ from os import environ
 from dotenv import load_dotenv
 from instancias import bd
 from flask_migrate import Migrate
+from usuarios import usuarios_blueprint
 
 # Leera las variables declaradas en el archivo .env y las pondra como variables de entorno
 load_dotenv()
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('DATABASE_URL')
+
+# Aca registramos todos los modulos del proyecto
+app.register_blueprint(usuarios_blueprint)#, url_prefix='/api')
 
 # inicializo mi conexion a la base de datos
 bd.init_app(app)
