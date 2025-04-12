@@ -77,7 +77,9 @@ class Login(Resource):
             if validacionPassword == True:
                 usuarioId = str(usuarioEncontrado[1])
                 # identity > servira para indicar a que usuario le pertenece esta JWT
-                token = create_access_token(identity=usuarioId)
+                # si queremos agregar mas informacion aparte del identificador, podemos usar el parametro additional_claims y pasarle un diccionario, tener cuidado de declara llaves importantes (que ya estan siendo utilizadas)
+                token = create_access_token(identity=usuarioId, additional_claims={
+                                            'tipoUsuario': 'SUPERUSUARIO'})
 
                 return {
                     'message': 'Bienvenido',
