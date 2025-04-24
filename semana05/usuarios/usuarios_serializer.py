@@ -1,6 +1,7 @@
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
-from modelos import Usuario
+from modelos import Usuario, TipoUsuario
 from marshmallow.validate import Regexp, Email
+from marshmallow_enum import EnumField
 
 
 class RegistrarUsuarioSerializer(SQLAlchemyAutoSchema):
@@ -8,6 +9,8 @@ class RegistrarUsuarioSerializer(SQLAlchemyAutoSchema):
         r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[@!#$%&*])[A-Za-z0-9@!#$%&*]{8,}$',
         error='El password debe tener al menos una mayus, una minus, un numero y un caracter especial y no menor a 8 caracteres')])
     correo = auto_field(validate=[Email()])
+    # Para las columnas que son de tipo Enum tenemos que declarar este comportamiento ya que marshmallow_sqlalchemy no es capaz de hacer esta validacion cuando es un Enum
+    tipoUsuario = EnumField(TipoUsuario)
 
     class Meta:
         model = Usuario
