@@ -34,3 +34,6 @@ class Registro(Resource):
                 'message': 'Error al registrar el usuario',
                 'content': error.args
             }, 400
+
+
+api.add_resource(Registro, '/registro')
