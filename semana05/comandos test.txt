@@ -1,0 +1,2 @@
+pytest > ejecuta los test en nuestro proyecto
+pytest --cov-report term-missing --cov=ARCHIVO|CARPETA  > muestra el inform de cobertura de los test y nos permite visualizar que lineas nos faltan
