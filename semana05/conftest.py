@@ -19,9 +19,12 @@ def app():
     # Para cuando queramos usar controladores que utilicen la base de datos, esta informacion no se debe guardar de manera permanente y no debemos ensuciar nuestra bd, por ello usamos una bd en MEMORIA como sqlite
 
     with app.app_context():
+        # elimina todas las tablas en la base de datos
         conexionBD.drop_all()
+        # crea todas las tablas sin el uso de migraciones
         conexionBD.create_all()
         yield app
+        # elimina todas las conexiones actualices a la base de datos para mantenerlo limpio
         conexionBD.session.remove()
 
 

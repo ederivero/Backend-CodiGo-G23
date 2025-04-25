@@ -2,6 +2,7 @@ from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
 from modelos import Usuario, TipoUsuario
 from marshmallow.validate import Regexp, Email
 from marshmallow_enum import EnumField
+from marshmallow import fields, Schema
 
 
 class RegistrarUsuarioSerializer(SQLAlchemyAutoSchema):
@@ -14,3 +15,8 @@ class RegistrarUsuarioSerializer(SQLAlchemyAutoSchema):
 
     class Meta:
         model = Usuario
+
+
+class LoginSerializer(Schema):
+    correo = fields.Email(required=True)
+    password = fields.String(required=True)
