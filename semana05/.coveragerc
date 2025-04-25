@@ -1,0 +1,8 @@
+[run]
+omit =
+    conftest.py
+    instancias.py
+    modelos.py
+    test_*.py
+    */__init__.py
+    *_serializer.py

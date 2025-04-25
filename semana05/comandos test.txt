@@ -1,2 +1,3 @@
 pytest > ejecuta los test en nuestro proyecto
 pytest --cov-report term-missing --cov=ARCHIVO|CARPETA  > muestra el inform de cobertura de los test y nos permite visualizar que lineas nos faltan
+pytest --cov-report=html --cov=. -v --html=report.html > genera un informe a parte del de la consola en un archivo html para poder visualizarlo de una mejor manera mediante el plugin pytest-html

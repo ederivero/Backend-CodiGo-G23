@@ -28,5 +28,6 @@ def inicio():
     }
 
 
-if __name__ == '__main__':
+# Si queremos que una linea de codigo que no puede ser accedida al test sea omitida entonces tenemos que colocar al lado del statement (if, else, while,etc) el texto "pragma: no cover"
+if __name__ == '__main__':  # pragma: no cover
     app.run(debug=True)
