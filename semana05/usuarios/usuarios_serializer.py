@@ -18,5 +18,9 @@ class RegistrarUsuarioSerializer(SQLAlchemyAutoSchema):
 
 
 class LoginSerializer(Schema):
-    correo = fields.Email(required=True)
+    # https://github.com/marshmallow-code/marshmallow/blob/dev/src/marshmallow/fields.py
+    correo = fields.Email(required=True, error_messages={
+        # Si queremos modificar los mensaje de errores de nuestros fields
+        'invalid': 'Correo invalido.'
+    })
     password = fields.String(required=True)

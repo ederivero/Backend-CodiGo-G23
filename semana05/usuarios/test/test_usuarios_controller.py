@@ -142,9 +142,44 @@ def test_login_usuario_password_incorrecta(client: Flask):
 
 # Realizar el test cuando no se le pase el correo en el login
 def test_login_sin_correo(client: Flask):
-    pass
+    body = {
+        'password': faker.password(),
+        'correo': 'correo'
+    }
+
+    res = client.post('/login', json=body)
+
+    data = res.get_json()
+
+    assert res.status_code == 400
+    assert data['content'][0]['correo'] == ['Correo invalido.']
 
 
 # Realizar el test cuando las credenciales son correctas
-def test_login_exitoso(client: Flask):
-    pass
+def test_login_exitoso(client: Flask, mocker: MockerFixture):
+    # Arrange
+    # Si queremos obligar al funcionamiento de un metodo podemos hacerlo mediante el mocker y agregandole un valor de retorno
+    mockerGenerarJWT = mocker.patch(
+        'usuarios.usuarios_controller.create_access_token')
+    mockerGenerarJWT.return_value = 'TU_TOKEN'
+
+    body = {
+        'correo': faker.email(),
+        'password': faker.password()
+    }
+    password = hashpw(bytes(body.get('password'), 'utf-8'),
+                      gensalt()).decode('utf-8')
+
+    nuevoUsuario = Usuario(correo=body.get('correo'),
+                           password=password, nombre=faker.name())
+    conexionBD.session.add(nuevoUsuario)
+    conexionBD.session.commit()
+
+    # Act
+    res = client.post('/login', json=body)
+    data = res.get_json()
+
+    # Assert
+    assert res.status_code == 200
+    assert data['token'] == 'TU_TOKEN'
+    mockerGenerarJWT.assert_called_with(identity=nuevoUsuario.id)
