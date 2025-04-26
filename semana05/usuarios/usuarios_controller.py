@@ -7,12 +7,23 @@ from flask_jwt_extended import create_access_token
 from utilitarios import enviar_correo
 from marshmallow.exceptions import ValidationError
 from .usuarios_serializer import RegistrarUsuarioSerializer, LoginSerializer
+from flasgger import swag_from
 
 usuarios_blueprint = Blueprint('usuarios_blueprint', __name__)
 api = Api(usuarios_blueprint)
 
 
 class Registro(Resource):
+    @swag_from({
+        'responses': {
+            201: {
+                'description': 'Usuario creado exitosamente',
+                'schema': {
+                    'type': 'object',
+                }
+            }
+        }
+    })
     def post(self):
         data = request.get_json()
         try:
