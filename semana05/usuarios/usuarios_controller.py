@@ -4,6 +4,7 @@ from instancias import conexionBD
 from modelos import Usuario
 from bcrypt import gensalt, hashpw, checkpw
 from flask_jwt_extended import create_access_token
+from utilitarios import enviar_correo
 from marshmallow.exceptions import ValidationError
 from .usuarios_serializer import RegistrarUsuarioSerializer, LoginSerializer
 
@@ -25,6 +26,19 @@ class Registro(Resource):
 
             conexionBD.session.add(nuevoUsuario)
             conexionBD.session.commit()
+
+            # enviaremos un mensaje de bienvenida
+            cuerpoCorreo = '''
+Bienvenido a Canchitapp,
+Gracias por registrarte en nuestra plataforma, ahora podras realizar las reservas en nuestras nuevas y mejoradas canchas #1 en el Perú.
+
+Atentamente,
+
+El equipo de Canchitapp
+                '''
+            enviar_correo([nuevoUsuario.correo],
+                          'Bienvenido a Canchitapp', cuerpoCorreo)
+
             return {
                 'message': 'Usuario registrado exitosamente'
             }, 201
@@ -61,7 +75,7 @@ class Login(Resource):
 
             else:
                 return {
-                    'message': 'Crendenciales incorrectas'
+                    'message': 'Credenciales incorrectas'
                 }, 403
         except ValidationError as error:
             return {

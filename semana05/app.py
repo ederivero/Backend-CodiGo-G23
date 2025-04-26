@@ -20,7 +20,7 @@ def create_app(configuracion_adicional=None):
 
     if configuracion_adicional:
         app.config.update(configuracion_adicional)
-    print(app.config)
+
     conexionBD.init_app(app)
     Migrate(app, conexionBD)
     JWTManager(app)
