@@ -1,0 +1,7 @@
+django-admin startproject NOMBRE_PROJECTO .         > crea un nuevo proyecto de django, los proyectos se crean usando el CLI
+py manage.py runserver                              > levanta mi proyecto en desarrollo
+py manage.py migrate                                > efectua las migraciones faltantes en la base de datos
+py manage.py createsuperuser                        > crear un superusuario para poder acceder al panel administrativo y se guardara en la tabla auth_user
+py manage.py showmigrations                         > muestra las migraciones si se han ejecutado o no
+py manage.py makemigrations NOMBRE_APP --name migra > crea una nueva migracion con los cambios realizados en los modelos
+py manage.py sqlmigrate NOMBRE_APP NUM_MIGRACION    > muestra el codigo SQL que contiene esa migracion

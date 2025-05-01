@@ -1,0 +1,4 @@
+sqlite3 ARCHIVO_BD      > ingresar a la bd
+.tables                 > muestra todas las tablas en el archivo/bd
+.schema NOMBRE_TABLA    > muestra la configuracion de la creacion de la tabla
+.help                   > ayuda para ver los comandos de sqlite
