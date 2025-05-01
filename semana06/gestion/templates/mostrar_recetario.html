@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block tituloPagina %}Recetario{% endblock tituloPagina %}
+
+{% block contenido %}
+<table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Descripcion</th>
+      <th scope="col">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for plato in platos %}
+      <tr>
+        <td>{{ plato.id }}</td>
+        <td>{{ plato.nombre }}</td>
+        <td>{{ plato.descripcion }}</td>
+        <td>
+            <div>
+                <a class="btn btn-warning" href="{% url 'editarRecetario' id=plato.id %}">Editar</a>
+                <button type="button" class="btn btn-danger">Eliminar</button>
+            </div>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+  </table>
+{% endblock contenido %}
