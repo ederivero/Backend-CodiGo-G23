@@ -1,11 +1,14 @@
+from datetime import datetime
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Plato
+from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.request import Request
-from .serializers import PlatoSerializer
-from rest_framework import status
+from rest_framework.generics import CreateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from .serializers import PlatoSerializer, IngredienteSerializer
+from .models import Plato, Ingrediente
 
 def vistaPrueba(request):
     print(request)
@@ -80,3 +83,28 @@ class PlatosController(APIView):
                 'message':'Error al crear el plato',
                 'content': serializer.errors # muestra los errores del porque la data no es valida
             }, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(http_method_names=['GET'])
+def verificarStatusServidor(request):
+    horaSistema = datetime.now()
+    return Response(data = {
+        'message':'El servidor esta funcionando correctamente',
+        # strftime > string from time > convierte la fecha y hora a un string utilizando un patron
+        # https://www.programiz.com/python-programming/datetime/strftime
+        'content': horaSistema.strftime('%d-%m-%Y %H:%M:%S')
+    })
+
+class CrearIngrediente(CreateAPIView):
+    # serializador
+    serializer_class = IngredienteSerializer
+    # la consulta para la base de datos
+    queryset = Ingrediente.objects.all()
+
+class CrearYListarIngredienteController(ListCreateAPIView):
+    serializer_class= IngredienteSerializer
+    queryset = Ingrediente.objects.all()
+
+class DevolverListarEliminarIngredienteController(RetrieveUpdateDestroyAPIView):
+    # https://www.django-rest-framework.org/api-guide/generic-views/#genericapiview
+    serializer_class = IngredienteSerializer
+    queryset = Ingrediente.objects.all()
