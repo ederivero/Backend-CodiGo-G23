@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Siempre que agregmos una nueva aplicacion tenemos que declararla aca
-    'gestion'
+    'gestion',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
