@@ -7,8 +7,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.generics import CreateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from .serializers import PlatoSerializer, IngredienteSerializer
-from .models import Plato, Ingrediente
+from .serializers import PlatoSerializer, IngredienteSerializer, RegistroUsuarioSerializer
+from .models import Plato, Ingrediente, Usuario
 
 def vistaPrueba(request):
     print(request)
@@ -108,3 +108,28 @@ class DevolverListarEliminarIngredienteController(RetrieveUpdateDestroyAPIView):
     # https://www.django-rest-framework.org/api-guide/generic-views/#genericapiview
     serializer_class = IngredienteSerializer
     queryset = Ingrediente.objects.all()
+
+@api_view(http_method_names=['POST'])
+def registrarUsuario(request):
+    serializador = RegistroUsuarioSerializer(data =request.data)
+    if serializador.is_valid():
+        # validated_data es una variable que solamente va a tener contenido cuando se mande a llamar a la funcion is_valid()
+        nombre = serializador.validated_data.get('nombre')
+        correo = serializador.validated_data.get('correo') 
+        password = serializador.validated_data.get('password')
+
+        nuevoUsuario = Usuario(nombre = nombre, 
+                               correo = correo)
+        
+        # ahora generamos el hash del password
+        nuevoUsuario.set_password(password)
+        nuevoUsuario.save()
+
+        return Response(data={
+            'message':'Usuario creado exitosamente'
+        }, status=status.HTTP_201_CREATED)
+    else:
+        return Response(data={
+            'message':'Error al crear el usuario',
+            'content': serializador.errors
+        }, status = status.HTTP_400_BAD_REQUEST)

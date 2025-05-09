@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # Siempre que agregmos una nueva aplicacion tenemos que declararla aca
     'gestion',
     'rest_framework',
+    'rest_framework_simplejwt'
 ]
 
 MIDDLEWARE = [
@@ -130,3 +131,14 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Sirve para indicar que modelo personalizado va a trabajar como la tabla auth_user por defecto
+AUTH_USER_MODEL='gestion.Usuario'
+
+# Sirve para modificar el comportamiento de nuestro DJANGO REST FRAMEWORK 
+REST_FRAMEWORK = {
+    # modificamos la autenticacion de drf para indicar que ahora usaremos JWT
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+         'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}

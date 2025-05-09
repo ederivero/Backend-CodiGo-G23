@@ -5,3 +5,13 @@ py manage.py createsuperuser                        > crear un superusuario para
 py manage.py showmigrations                         > muestra las migraciones si se han ejecutado o no
 py manage.py makemigrations NOMBRE_APP --name migra > crea una nueva migracion con los cambios realizados en los modelos
 py manage.py sqlmigrate NOMBRE_APP NUM_MIGRACION    > muestra el codigo SQL que contiene esa migracion
+
+Como hacer una copia de seguridad con determinadas tablas
+pg_dump -U USUARIO -d BASE_DE_DATOS -t TABLA1 -t TABLA2 --data-only > data.sql 
+
+NOTA: Los siguientes comandos solamente funcionan en terminales GIT | MACOS | LINUX | WSL
+file -i NOMBRE.EXT > indica en que encodificacion fue creado el archivo
+iconv -f CODIFICACION_ORIGEN -t CODIFICACION_DESTINO nombre_archivo.ext > nombre_archivo_destino.ext
+
+Para restaurar la informacion o data a la bd
+psql -U USUARIO -d BASE_DE_DATOS -f ARCHIVO.sql

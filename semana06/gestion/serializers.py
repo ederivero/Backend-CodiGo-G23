@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from .models import Plato, Ingrediente
+from .models import Plato, Ingrediente, Usuario
 
 class PlatoSerializer(ModelSerializer):
     class Meta:
@@ -16,3 +16,8 @@ class IngredienteSerializer(ModelSerializer):
     class Meta:
         model = Ingrediente
         fields = '__all__'
+
+class RegistroUsuarioSerializer(ModelSerializer):
+    class Meta: 
+        model = Usuario
+        fields = "__all__"

@@ -6,7 +6,10 @@ from .views import (vistaPrueba,
                     verificarStatusServidor, 
                     CrearIngrediente,
                     CrearYListarIngredienteController,
-                    DevolverListarEliminarIngredienteController)
+                    DevolverListarEliminarIngredienteController,
+                    registrarUsuario)
+
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 # si no se llama la variable asi, tendremos un error
 urlpatterns = [
@@ -18,5 +21,8 @@ urlpatterns = [
     path('status/', verificarStatusServidor),
     path('crear-ingrediente/', CrearIngrediente.as_view()),
     path('ingredientes/', CrearYListarIngredienteController.as_view()),
-    path('ingrediente/<pk>', DevolverListarEliminarIngredienteController.as_view())
+    path('ingrediente/<pk>', DevolverListarEliminarIngredienteController.as_view()),
+    path('registro/', registrarUsuario),
+    path('login/', TokenObtainPairView.as_view()),
+
 ]
