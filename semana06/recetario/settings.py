@@ -142,3 +142,10 @@ REST_FRAMEWORK = {
          'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
+
+# Sirve para poder modificar la configuracion de mi libreria encargada de generar y validar las tokens
+# https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html
+from datetime import timedelta
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=2, minutes=30, seconds=10)
+}

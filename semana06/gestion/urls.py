@@ -7,7 +7,8 @@ from .views import (vistaPrueba,
                     CrearIngrediente,
                     CrearYListarIngredienteController,
                     DevolverListarEliminarIngredienteController,
-                    registrarUsuario)
+                    registrarUsuario,
+                    loginManual)
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 
@@ -24,5 +25,5 @@ urlpatterns = [
     path('ingrediente/<pk>', DevolverListarEliminarIngredienteController.as_view()),
     path('registro/', registrarUsuario),
     path('login/', TokenObtainPairView.as_view()),
-
+    path('login-personalizado/', loginManual)
 ]

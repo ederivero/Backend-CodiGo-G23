@@ -9,6 +9,11 @@ from rest_framework.request import Request
 from rest_framework.generics import CreateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from .serializers import PlatoSerializer, IngredienteSerializer, RegistroUsuarioSerializer
 from .models import Plato, Ingrediente, Usuario
+# IsAuthenticatedOrReadOnly > Si es un metodo get no es necesario estar autenticado, sin embargo si es otro metodo es obligatorio
+# IsAuthenticated > Siempre tiene que estar autenticado para cualquier metodo
+# IsAdminUser > Solamente los usuarios que son superusuarios (is_superuser =true) van a poder acceder a los metodos
+# AllowAny > Permite a cualquiera (autenticado o no) poder acceder a los metodos
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser, AllowAny
 
 def vistaPrueba(request):
     print(request)
@@ -30,10 +35,19 @@ def editarRecetario(request, id):
 class PlatosController(APIView):
     # https://www.django-rest-framework.org/api-guide/views/
     # cada metodo respondera a un metodo HTTP
+
+    # si quiero que esta clase utilicen una forma de autenticar y verificar al usuario registrado 
+    permission_classes= [IsAuthenticated]
+
     def get(self, request:Request):
         queryParams = request.query_params
         totalQueryParams = len(queryParams.keys())
         filtros = {}
+
+        # request.auth > Muestra el formato por el cual estoy haciendo la autenticacion (TOKEN)
+        # request.user > Muestra la instancia del usuario que esta autenticado, si no hay usuario la instancia sera AnonymousUser
+        print(request.user.id)
+        
 
         if (queryParams):
             if (queryParams.get('nombre')):
@@ -48,7 +62,10 @@ class PlatosController(APIView):
             return Response(data={
                 'message':'Parametro incorrecto'
             })
-
+        
+        # Aqui agregamos el filtro para solamente retornar los platos que me pertenecen
+        filtros['usuarioId'] = request.user.id
+        
         # https://docs.djangoproject.com/en/5.2/topics/db/queries/#field-lookups
         # SELECT * FROM platos WHERE nombre ILIKE 'gallina'
         platos = Plato.objects.filter(**filtros).all()
@@ -133,3 +150,28 @@ def registrarUsuario(request):
             'message':'Error al crear el usuario',
             'content': serializador.errors
         }, status = status.HTTP_400_BAD_REQUEST)
+
+from rest_framework_simplejwt.tokens import RefreshToken
+
+@api_view(http_method_names=['POST'])
+def loginManual(request):
+    data = request.data
+    usuarioEncontrado = Usuario.objects.filter(correo = data.get('correo')).first()
+
+    if not usuarioEncontrado:
+        return Response(data={
+            'message': 'Usuario no existe'
+        }, status = status.HTTP_404_NOT_FOUND)
+    
+    passwordCorrecto = usuarioEncontrado.check_password(data.get('password'))
+
+    if not passwordCorrecto:
+        return Response(data={
+            'message': 'Credenciales incorrectas'
+        }, status=status.HTTP_403_FORBIDDEN)
+    
+    # Asi se crea una access token de manera manual
+    token = RefreshToken.for_user(usuarioEncontrado)
+    return Response(data={
+        'token':  token.access_token.__str__()
+    })
