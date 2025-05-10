@@ -16,6 +16,10 @@ from .models import Plato, Ingrediente, Usuario
 # AllowAny > Permite a cualquiera (autenticado o no) poder acceder a los metodos
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth.models import AnonymousUser
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+
 
 def vistaPrueba(request):
     print(request)
@@ -41,6 +45,27 @@ class PlatosController(APIView):
     # si quiero que esta clase utilicen una forma de autenticar y verificar al usuario registrado 
     permission_classes= [IsAuthenticated]
 
+    @swagger_auto_schema(
+            responses={
+                200:openapi.Schema(type=openapi.TYPE_OBJECT, properties={
+                    'message': openapi.Schema(type=openapi.TYPE_STRING, description='Los platos son'),
+                    'content': openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_OBJECT, properties= {
+                        'id': openapi.Schema(type=openapi.TYPE_INTEGER, description='1'),
+                        'nombre': openapi.Schema(type=openapi.TYPE_STRING, description='Ceviche'),
+                        'descripcion': openapi.Schema(type=openapi.TYPE_STRING, description='Delicioso plato'),
+                        'usuarioId': openapi.Schema(type=openapi.TYPE_INTEGER, description='1'),
+                        'esPublico': openapi.Schema(type=openapi.TYPE_BOOLEAN, description='Estado'),
+                    }, example = {
+                        'id': 1,
+                        'nombre': 'Ceviche',
+                        'descripcion': 'Delicioso ceviche',
+                        'usuarioId': 3,
+                        'esPublico': False
+                    }))
+                    }),
+                401: openapi.Schema(type=openapi.TYPE_OBJECT, properties={
+                    'detail': openapi.Schema(type=openapi.TYPE_STRING, description='Authentication credentials were not provided."')
+                })})
     def get(self, request:Request):
         queryParams = request.query_params
         totalQueryParams = len(queryParams.keys())
@@ -78,6 +103,10 @@ class PlatosController(APIView):
             'content': serializer.data
         })
     
+    
+    @swagger_auto_schema(
+            request_body=PlatoSerializer
+    )
     def post(self, request:Request):
         data = request.data
 
@@ -161,6 +190,24 @@ class DevolverListarEliminarIngredienteController(RetrieveUpdateDestroyAPIView):
     serializer_class = IngredienteSerializer
     queryset = Ingrediente.objects.all()
 
+
+@swagger_auto_schema(
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['correo', 'password', 'nombre'], # campos requeridos del body
+        properties={
+            'nombre': openapi.Schema(type=openapi.TYPE_STRING, description='Nombre del cheff'),
+            'correo': openapi.Schema(type=openapi.TYPE_STRING, description='Correo del cheff'),
+            'password': openapi.Schema(type=openapi.TYPE_STRING, description='Password con no menor a 6 caracteres')
+        },example = {
+            'nombre': 'Jhon Doe',
+            'correo': 'jhon@email.com',
+            'password': 'Welcome123!'
+        }
+    ),
+    methods=['POST'],
+    responses={201:'Usuario creado exitosamente',400:'Error al crear el usuario'}
+)
 @api_view(http_method_names=['POST'])
 def registrarUsuario(request):
     serializador = RegistroUsuarioSerializer(data =request.data)
@@ -223,6 +270,20 @@ class PlatoViewset(ViewSet):
                 'message':'Plato no existe'
             }, status=status.HTTP_404_NOT_FOUND)
         
+        if not platoEncontrado.esPublico:
+            # type() > Indicara que tipo de dato o clase a la cual pertenece esta variable
+            if type(request.user) == AnonymousUser:
+                return Response(data={
+                    'message':'Se necesita una token para esta peticion'
+                }, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                # si esta autenticado el usuario pero ahora tendremos que ver si le pertenece este plato
+                
+                if platoEncontrado.usuarioId.id != request.user.id:
+                    return Response(data={
+                        'message':'Credenciales incorrectas'
+                    }, status=status.HTTP_403_FORBIDDEN)
+
         serializer = PlatoSerializer(instance = platoEncontrado)
         
         # Cuando ingreso a un atributo creado desde el related_name este me devolvera la instancia de la clase ya con sus objects 

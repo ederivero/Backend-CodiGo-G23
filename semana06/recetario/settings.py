@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     # Siempre que agregmos una nueva aplicacion tenemos que declararla aca
     'gestion',
     'rest_framework',
-    'rest_framework_simplejwt'
+    'rest_framework_simplejwt',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -148,4 +149,17 @@ REST_FRAMEWORK = {
 from datetime import timedelta
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=2, minutes=30, seconds=10)
+}
+
+# Sirve para todas las modificaciones que queremos hacer a nuestra libreria de drf-yasg 
+SWAGGER_SETTINGS  = {
+    # indicar las opciones que puedo presentar para el boton de autorize y este servira para usar el header de authorization
+    'SECURITY_DEFINITIONS': {
+        'api_key': {
+            'type': 'apiKey',
+            'name': "Authorization",
+            "in": "header",
+            'description': 'Usa el formato **Bearer <TU_TOKEN>**'
+        }
+    },
 }
