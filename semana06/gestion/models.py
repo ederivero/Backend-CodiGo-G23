@@ -52,11 +52,13 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     objects = ManejadorUsuario()
     class Meta:
         db_table = 'usuarios'
+
 class Plato(models.Model):
     id = models.AutoField(primary_key=True)
     nombre = models.TextField(null=False)
     descripcion = models.TextField()
     usuarioId = models.ForeignKey(to=Usuario, on_delete=models.PROTECT, db_column='usuario_id', null=False)
+    esPublico = models.BooleanField(default=True, null=False, db_column='es_publico')
 
     class Meta:
         # https://docs.djangoproject.com/en/5.2/ref/models/options/

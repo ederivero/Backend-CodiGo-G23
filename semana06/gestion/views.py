@@ -7,6 +7,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.generics import CreateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.viewsets import ViewSet
 from .serializers import PlatoSerializer, IngredienteSerializer, RegistroUsuarioSerializer
 from .models import Plato, Ingrediente, Usuario
 # IsAuthenticatedOrReadOnly > Si es un metodo get no es necesario estar autenticado, sin embargo si es otro metodo es obligatorio
@@ -14,6 +15,7 @@ from .models import Plato, Ingrediente, Usuario
 # IsAdminUser > Solamente los usuarios que son superusuarios (is_superuser =true) van a poder acceder a los metodos
 # AllowAny > Permite a cualquiera (autenticado o no) poder acceder a los metodos
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser, AllowAny
+from rest_framework_simplejwt.tokens import RefreshToken
 
 def vistaPrueba(request):
     print(request)
@@ -79,6 +81,9 @@ class PlatosController(APIView):
     def post(self, request:Request):
         data = request.data
 
+        # ahora antes de validar la data ingresamos el usuarioId a nuestra informacion para que sea validada
+        data['usuarioId'] = request.user.id
+
         serializer = PlatoSerializer(data=data)
         # valida la data para ver si es o no es correcta
         dataValida = serializer.is_valid()
@@ -111,15 +116,45 @@ def verificarStatusServidor(request):
         'content': horaSistema.strftime('%d-%m-%Y %H:%M:%S')
     })
 
-class CrearIngrediente(CreateAPIView):
+class CrearIngredienteController(CreateAPIView):
     # serializador
-    serializer_class = IngredienteSerializer
+    serializer_class= IngredienteSerializer
     # la consulta para la base de datos
     queryset = Ingrediente.objects.all()
+    permission_classes =[IsAuthenticated]
 
-class CrearYListarIngredienteController(ListCreateAPIView):
-    serializer_class= IngredienteSerializer
-    queryset = Ingrediente.objects.all()
+    def post(self, request):
+        # Podemos modificar el comportamiento de los metodos de la clase generica de vistas
+        usuarioId = request.user.id
+        print(usuarioId)
+        # 1. obtener el plato al cual se quiere ingresar el ingrediente (platoId)
+        platoEncontrado = Plato.objects.filter(id = request.data.get('platoId')).first()
+        if not platoEncontrado:
+            return Response(data={
+                'message': 'Plato a ingresar no existe'
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # 2. en ese plato ver a que usuario le pertenece
+        usuarioPertenece =platoEncontrado.usuarioId.id
+        # 3. Si el usuario propietario es diferente del usuario identificado no permitir el registro
+
+        if usuarioPertenece != usuarioId:
+            return Response(data={
+                'message':'El usuario no tiene acceso a este plato'
+            },status=status.HTTP_403_FORBIDDEN)
+
+        serializador = self.serializer_class(data=request.data)
+
+        if serializador.is_valid():
+            # Nos retornara el ingrediente creado en la base de datos
+            ingredienteCreado = serializador.save()
+
+            resultado = self.serializer_class(instance = ingredienteCreado)
+            dataResultado = resultado.data
+
+            return Response(data=dataResultado,status=status.HTTP_201_CREATED)
+        else:
+            return Response(data=serializador.errors)
 
 class DevolverListarEliminarIngredienteController(RetrieveUpdateDestroyAPIView):
     # https://www.django-rest-framework.org/api-guide/generic-views/#genericapiview
@@ -151,8 +186,6 @@ def registrarUsuario(request):
             'content': serializador.errors
         }, status = status.HTTP_400_BAD_REQUEST)
 
-from rest_framework_simplejwt.tokens import RefreshToken
-
 @api_view(http_method_names=['POST'])
 def loginManual(request):
     data = request.data
@@ -175,3 +208,41 @@ def loginManual(request):
     return Response(data={
         'token':  token.access_token.__str__()
     })
+
+class PlatoViewset(ViewSet):
+    # aca podemos implementar un monton de metodos (doble get)
+    # si quiero devolver un monto de platos puedo usar el metodo list
+    def list(self, request):
+        pass
+
+    # si quiero devolver un solo plato mediante su pk
+    def retrieve(self,request, pk):
+        platoEncontrado = Plato.objects.filter(id = pk).first()
+        if not platoEncontrado:
+            return Response(data={
+                'message':'Plato no existe'
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = PlatoSerializer(instance = platoEncontrado)
+        
+        # Cuando ingreso a un atributo creado desde el related_name este me devolvera la instancia de la clase ya con sus objects 
+        print(platoEncontrado.ingredientes.all()) 
+        return Response(data = {
+            'content': serializer.data
+        })
+
+    # si quiero hacer una creacion (post)
+    def create(self, request):
+        pass
+
+    # si quiero hacer una actualizacion total (put)
+    def update(self, request, pk=None):
+        pass
+
+    # si quiero hacer una actualizacion parcial solamente unos cuantos campos, no todos (patch)
+    def partial_update(self, request, pk=None):
+        pass
+
+    # si quiero hacer una eliminacion (delete)
+    def destroy(self, request, pk=None):
+        pass

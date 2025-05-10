@@ -1,7 +1,17 @@
 from rest_framework.serializers import ModelSerializer
 from .models import Plato, Ingrediente, Usuario
 
+class IngredienteSerializer(ModelSerializer):
+    class Meta:
+        model = Ingrediente
+        fields = '__all__'
+
+
 class PlatoSerializer(ModelSerializer):
+    # defino mi atributo de mis relaciones
+    # como es una relacion de 1-n entonces indicare que le voy a pasar un arreglo de ingredientes
+    # si queremos que este atributo solo sea para poder visualizar indicaremos que sea read_only
+    ingredientes = IngredienteSerializer(many=True, read_only=True)
     class Meta:
         model = Plato
         # fields | exclude
@@ -12,10 +22,6 @@ class PlatoSerializer(ModelSerializer):
         fields = '__all__'
         # fields = ['id']
 
-class IngredienteSerializer(ModelSerializer):
-    class Meta:
-        model = Ingrediente
-        fields = '__all__'
 
 class RegistroUsuarioSerializer(ModelSerializer):
     class Meta: 
