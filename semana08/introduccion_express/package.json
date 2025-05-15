@@ -1,0 +1,16 @@
+{
+  "name": "introduccion_express",
+  "version": "1.0.0",
+  "description": "Mi primer proyecto de express",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "express",
+    "node",
+    "backend"
+  ],
+  "author": "Eduardo de Rivero",
+  "license": "ISC"
+}

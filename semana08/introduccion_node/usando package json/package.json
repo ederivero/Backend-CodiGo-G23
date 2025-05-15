@@ -1,0 +1,15 @@
+{
+    "author": {
+        "name": "Eduardo de Rivero",
+        "email": "ederiveroman@gmail.com"
+    },
+    "license": "MIT",
+    "type": "module",
+    "scripts": {
+        "prueba": "echo Hola!",
+        "ejecutar-prueba": "node prueba.js"
+    },
+    "dependencies": {
+        "is-odd": "^3.0.1"
+    }
+}
