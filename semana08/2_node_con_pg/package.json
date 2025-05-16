@@ -1,0 +1,28 @@
+{
+  "name": "2_node_con_pg",
+  "version": "1.0.0",
+  "description": "usando node con postgres",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
+  },
+  "keywords": [
+    "node",
+    "express"
+  ],
+  "author": "Eduardo de Rivero",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "pg": "^8.16.0",
+    "zod": "^3.24.4"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/pg": "^8.15.2",
+    "nodemon": "^3.1.10"
+  }
+}
