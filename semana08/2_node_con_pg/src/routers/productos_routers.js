@@ -3,6 +3,8 @@ import {
   crearProducto,
   listarProductos,
   devolverProducto,
+  actualizarProducto,
+  eliminarProducto,
 } from "../controllers/productos_controllers.js";
 
 export const productoRouter = Router();
@@ -16,4 +18,8 @@ export const productoRouter = Router();
 productoRouter.route("/productos").get(listarProductos).post(crearProducto);
 
 // Para indicar un parametro que pueda cambiar colocamos ":"
-productoRouter.route("/producto/:id").get(devolverProducto);
+productoRouter
+  .route("/producto/:id")
+  .get(devolverProducto)
+  .put(actualizarProducto)
+  .delete(eliminarProducto);
