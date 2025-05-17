@@ -25,3 +25,11 @@ export const crearProducto = async (req, res) => {
     content: nuevoProducto,
   });
 };
+
+export const listarProductos = async (req, res) => {
+  const productos = await prisma.producto.findMany();
+
+  return res.json({
+    content: productos,
+  });
+};
