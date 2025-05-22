@@ -4,7 +4,7 @@ import {
   RegistroUsuarioSerializer,
 } from "./usuarios_serializer.js";
 import { hash, genSalt, compare } from "bcrypt";
-import { sign } from "jsonwebtoken";
+import JWT from "jsonwebtoken";
 
 export const registroUsuario = async (req, res) => {
   const serializador = RegistroUsuarioSerializer.safeParse(req.body);
@@ -60,12 +60,14 @@ export const login = async (req, res) => {
   );
 
   if (validacionPassword) {
-    const token = sign(
+    const token = JWT.sign(
       {
         usuarioId: usuarioEncontrado.id,
       },
-      process.env.SECRET_JWT_KEY
+      process.env.SECRET_JWT_KEY,
+      { expiresIn: 3600 } // expiresIn en numeros es en segundos
     );
+
     return res.json({
       message: "Bienvenido",
       content: token,
