@@ -1,0 +1,8 @@
+npx prisma init             > inicializa el proyecto con prisma creando la carpeta prisma
+
+npx prisma generate         > genera el cliente de prisma definido en la linea 10 del schema, si no se definio, usaremos los node_modules para crear ahi nuestro cliente
+
+npx prisma migrate dev      > crea una nueva migracion de todos los cambios que hemos hecho en nuestro schema
+ADICIONAL --create-only sirve para solamente crear la migracion pero no ejecutarla en la base de datos, esto sirve para ver si la migracion es correcta antes de hacer modificaciones a la base de datos
+
+npx prisma migrate deploy   > ejecuta todas las migraciones faltante en la base de datos

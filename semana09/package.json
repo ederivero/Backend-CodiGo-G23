@@ -1,0 +1,32 @@
+{
+  "name": "3_node_con_prisma",
+  "version": "1.0.0",
+  "description": "Proyecto de node utilizando un ORM llamado prisma",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev":"nodemon src/index.js",
+    "start":"node src/index.js"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "prisma"
+  ],
+  "author": "Eduardo de Rivero",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^6.8.2",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "zod": "^3.24.4"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.2",
+    "nodemon": "^3.1.10",
+    "prisma": "^6.8.2"
+  },
+  "prisma":{
+    "seed":"node prisma/seed.js"
+  }
+}

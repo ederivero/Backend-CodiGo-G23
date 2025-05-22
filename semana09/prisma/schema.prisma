@@ -1,0 +1,96 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  // Indicar la ubicacion donde se almacenara nuestro cliente de prisma, esto me servira para poder utilizar prisma desde mi proyecto
+  output   = "./generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Producto {
+  id          Int     @id @default(autoincrement())
+  nombre      String  @db.Text
+  descripcion String?
+  precio      Float
+  disponible  Boolean @default(true)
+  cantidad    Int
+
+  detalleOperaciones DetalleOperacion[]
+
+  // Para modificar la tabla en la base de datos
+  // @@map > sirve para modificar el nombre de la tabla en la base de datos
+  @@map("productos")
+}
+
+model Cliente {
+  id              Int           @id @default(autoincrement())
+  nombre          String
+  direccion       String
+  tipoDocumento   TipoDocumento @default(DNI) @map("tipo_documento")
+  numeroDocumento String        @unique @map("numero_documento")
+  correo          String
+  // Ahora tenemos que crear la relacion inversa
+  operaciones     Operacion[] // Puede ser un arreglo de operaciones
+
+  @@map("clientes")
+}
+
+model Operacion {
+  id        Int      @id @default(autoincrement())
+  fecha     DateTime @default(now()) // La hora y fecha actual del servidor
+  total     Float?
+  clienteId Int      @map("cliente_id")
+  // Aca van las relaciones
+  cliente   Cliente  @relation(references: [id], fields: [clienteId])
+
+  detalleOperaciones DetalleOperacion[]
+
+  @@map("operaciones")
+}
+
+model DetalleOperacion {
+  id          Int       @id @default(autoincrement())
+  cantidad    Int
+  subTotal    Float     @map("sub_total")
+  productoId  Int       @map("producto_id")
+  operacionId Int       @map("operacion_id")
+  // Relaciones
+  producto    Producto  @relation(references: [id], fields: [productoId])
+  operacion   Operacion @relation(references: [id], fields: [operacionId])
+
+  @@map("detalle_operaciones")
+}
+
+model Usuario {
+  id          Int         @id @default(autoincrement())
+  nombre      String
+  correo      String      @unique
+  password    String
+  tipoUsuario TipoUsuario @map("tipo_usuario")
+  // Columnas de auditoria
+  // Su valor sera creado automanticamente cuando se ingrese un nuevo registro con la fecha y hora de la bd
+  createdAt   DateTime    @default(now()) @map("created_at")
+  // Su valor se modificara cada vez que se realice una modificacion al registro y utilizara la hora de la bd
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+
+  @@map("usuarios")
+}
+
+enum TipoUsuario {
+  ADMIN
+  CAJERO
+}
+
+enum TipoDocumento {
+  DNI
+  CE
+  RUC
+}
