@@ -153,6 +153,16 @@ exports.Prisma.DetalleOperacionScalarFieldEnum = {
   operacionId: 'operacionId'
 };
 
+exports.Prisma.UsuarioScalarFieldEnum = {
+  id: 'id',
+  nombre: 'nombre',
+  correo: 'correo',
+  password: 'password',
+  tipoUsuario: 'tipoUsuario',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -173,11 +183,17 @@ exports.TipoDocumento = exports.$Enums.TipoDocumento = {
   RUC: 'RUC'
 };
 
+exports.TipoUsuario = exports.$Enums.TipoUsuario = {
+  ADMIN: 'ADMIN',
+  CAJERO: 'CAJERO'
+};
+
 exports.Prisma.ModelName = {
   Producto: 'Producto',
   Cliente: 'Cliente',
   Operacion: 'Operacion',
-  DetalleOperacion: 'DetalleOperacion'
+  DetalleOperacion: 'DetalleOperacion',
+  Usuario: 'Usuario'
 };
 
 /**

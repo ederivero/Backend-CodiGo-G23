@@ -69,6 +69,26 @@ model DetalleOperacion {
   @@map("detalle_operaciones")
 }
 
+model Usuario {
+  id          Int         @id @default(autoincrement())
+  nombre      String
+  correo      String      @unique
+  password    String
+  tipoUsuario TipoUsuario @map("tipo_usuario")
+  // Columnas de auditoria
+  // Su valor sera creado automanticamente cuando se ingrese un nuevo registro con la fecha y hora de la bd
+  createdAt   DateTime    @default(now()) @map("created_at")
+  // Su valor se modificara cada vez que se realice una modificacion al registro y utilizara la hora de la bd
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+
+  @@map("usuarios")
+}
+
+enum TipoUsuario {
+  ADMIN
+  CAJERO
+}
+
 enum TipoDocumento {
   DNI
   CE

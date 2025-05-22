@@ -1,6 +1,8 @@
 import express from "express";
 import { productoRouter } from "./routes/productos_router.js";
 import { clientesRouter } from "./routes/clientes_router.js";
+import { usuarioRouter } from "./routes/usuarios_router.js";
+
 const servidor = express();
 
 // Nullish coalescing operator
@@ -11,6 +13,7 @@ servidor.use(express.json());
 // Aca dejamos las rutas declaradas en nuestros routes
 servidor.use(productoRouter);
 servidor.use(clientesRouter);
+servidor.use(usuarioRouter);
 
 servidor.listen(PORT, (error) => {
   if (error) {
