@@ -1,7 +1,9 @@
 import JWT from "jsonwebtoken";
+import { prisma } from "../cliente.js";
+import { TipoUsuario } from "../../prisma/generated/prisma/client.js";
 
 // Middleware >
-export const validarToken = (req, res, next) => {
+export const validarToken = async (req, res, next) => {
   // El next sirve para indicarle que puede continuar con el siguiente controlador
 
   // Primero analizamos los headers
@@ -31,7 +33,10 @@ export const validarToken = (req, res, next) => {
 
     // Ahora como ya sabemos que el usuario ha sido correctamente identificado entonces procedemos a agregarlo al request para que los otros controladores o middlewares puedan utilizarlo
     // TODO: Agregar en el req.user toda la informacion del usuario
-    req.user = payload.usuarioId;
+    const usuarioEncontrado = await prisma.usuario.findUniqueOrThrow({
+      where: { id: payload.usuarioId },
+    });
+    req.user = usuarioEncontrado;
 
     // Para indicarle que hemos terminado en este middleware mandamos a llamar a la funcion next para que continue
     next();
@@ -40,6 +45,26 @@ export const validarToken = (req, res, next) => {
     return res.status(400).json({
       message: "Token invalida",
       content: error.message,
+    });
+  }
+};
+
+// Este middleware vendria luego del validarToken por lo que ya deberiamos de tener el req.user
+export const validarAdmin = (req, res, next) => {
+  const usuario = req.user;
+
+  if (!usuario) {
+    return res.status(400).json({
+      message: "Usuario no encontrado",
+    });
+  }
+
+  if (usuario.tipoUsuario === TipoUsuario.ADMIN) {
+    next();
+  } else {
+    return res.status(403).json({
+      message:
+        "Usuario no cuenta con privilegios suficientes para realizar esta accion",
     });
   }
 };
