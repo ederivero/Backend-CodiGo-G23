@@ -24,6 +24,7 @@ model Producto {
   cantidad    Int
 
   detalleOperaciones DetalleOperacion[]
+  archivos           Archivo[]
 
   // Para modificar la tabla en la base de datos
   // @@map > sirve para modificar el nombre de la tabla en la base de datos
@@ -82,6 +83,17 @@ model Usuario {
   updatedAt   DateTime    @updatedAt @map("updated_at")
 
   @@map("usuarios")
+}
+
+model Archivo {
+  id         Int       @id @default(autoincrement())
+  nombre     String
+  extension  String
+  folder     String
+  productoId Int?      @map("producto_id")
+  producto   Producto? @relation(fields: [productoId], references: [id])
+
+  @@map("archivos")
 }
 
 enum TipoUsuario {

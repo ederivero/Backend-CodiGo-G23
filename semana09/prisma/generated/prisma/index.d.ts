@@ -38,6 +38,11 @@ export type DetalleOperacion = $Result.DefaultSelection<Prisma.$DetalleOperacion
  * 
  */
 export type Usuario = $Result.DefaultSelection<Prisma.$UsuarioPayload>
+/**
+ * Model Archivo
+ * 
+ */
+export type Archivo = $Result.DefaultSelection<Prisma.$ArchivoPayload>
 
 /**
  * Enums
@@ -243,6 +248,16 @@ export class PrismaClient<
     * ```
     */
   get usuario(): Prisma.UsuarioDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.archivo`: Exposes CRUD operations for the **Archivo** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Archivos
+    * const archivos = await prisma.archivo.findMany()
+    * ```
+    */
+  get archivo(): Prisma.ArchivoDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -687,7 +702,8 @@ export namespace Prisma {
     Cliente: 'Cliente',
     Operacion: 'Operacion',
     DetalleOperacion: 'DetalleOperacion',
-    Usuario: 'Usuario'
+    Usuario: 'Usuario',
+    Archivo: 'Archivo'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -706,7 +722,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "producto" | "cliente" | "operacion" | "detalleOperacion" | "usuario"
+      modelProps: "producto" | "cliente" | "operacion" | "detalleOperacion" | "usuario" | "archivo"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1080,6 +1096,80 @@ export namespace Prisma {
           }
         }
       }
+      Archivo: {
+        payload: Prisma.$ArchivoPayload<ExtArgs>
+        fields: Prisma.ArchivoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ArchivoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArchivoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ArchivoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArchivoPayload>
+          }
+          findFirst: {
+            args: Prisma.ArchivoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArchivoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ArchivoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArchivoPayload>
+          }
+          findMany: {
+            args: Prisma.ArchivoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArchivoPayload>[]
+          }
+          create: {
+            args: Prisma.ArchivoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArchivoPayload>
+          }
+          createMany: {
+            args: Prisma.ArchivoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ArchivoCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArchivoPayload>[]
+          }
+          delete: {
+            args: Prisma.ArchivoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArchivoPayload>
+          }
+          update: {
+            args: Prisma.ArchivoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArchivoPayload>
+          }
+          deleteMany: {
+            args: Prisma.ArchivoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ArchivoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ArchivoUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArchivoPayload>[]
+          }
+          upsert: {
+            args: Prisma.ArchivoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArchivoPayload>
+          }
+          aggregate: {
+            args: Prisma.ArchivoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateArchivo>
+          }
+          groupBy: {
+            args: Prisma.ArchivoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ArchivoGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ArchivoCountArgs<ExtArgs>
+            result: $Utils.Optional<ArchivoCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1169,6 +1259,7 @@ export namespace Prisma {
     operacion?: OperacionOmit
     detalleOperacion?: DetalleOperacionOmit
     usuario?: UsuarioOmit
+    archivo?: ArchivoOmit
   }
 
   /* Types for Logging */
@@ -1264,10 +1355,12 @@ export namespace Prisma {
 
   export type ProductoCountOutputType = {
     detalleOperaciones: number
+    archivos: number
   }
 
   export type ProductoCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     detalleOperaciones?: boolean | ProductoCountOutputTypeCountDetalleOperacionesArgs
+    archivos?: boolean | ProductoCountOutputTypeCountArchivosArgs
   }
 
   // Custom InputTypes
@@ -1286,6 +1379,13 @@ export namespace Prisma {
    */
   export type ProductoCountOutputTypeCountDetalleOperacionesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DetalleOperacionWhereInput
+  }
+
+  /**
+   * ProductoCountOutputType without action
+   */
+  export type ProductoCountOutputTypeCountArchivosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ArchivoWhereInput
   }
 
 
@@ -1570,6 +1670,7 @@ export namespace Prisma {
     disponible?: boolean
     cantidad?: boolean
     detalleOperaciones?: boolean | Producto$detalleOperacionesArgs<ExtArgs>
+    archivos?: boolean | Producto$archivosArgs<ExtArgs>
     _count?: boolean | ProductoCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["producto"]>
 
@@ -1603,6 +1704,7 @@ export namespace Prisma {
   export type ProductoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nombre" | "descripcion" | "precio" | "disponible" | "cantidad", ExtArgs["result"]["producto"]>
   export type ProductoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     detalleOperaciones?: boolean | Producto$detalleOperacionesArgs<ExtArgs>
+    archivos?: boolean | Producto$archivosArgs<ExtArgs>
     _count?: boolean | ProductoCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProductoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1612,6 +1714,7 @@ export namespace Prisma {
     name: "Producto"
     objects: {
       detalleOperaciones: Prisma.$DetalleOperacionPayload<ExtArgs>[]
+      archivos: Prisma.$ArchivoPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -2015,6 +2118,7 @@ export namespace Prisma {
   export interface Prisma__ProductoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     detalleOperaciones<T extends Producto$detalleOperacionesArgs<ExtArgs> = {}>(args?: Subset<T, Producto$detalleOperacionesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DetalleOperacionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    archivos<T extends Producto$archivosArgs<ExtArgs> = {}>(args?: Subset<T, Producto$archivosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArchivoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2459,6 +2563,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DetalleOperacionScalarFieldEnum | DetalleOperacionScalarFieldEnum[]
+  }
+
+  /**
+   * Producto.archivos
+   */
+  export type Producto$archivosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Archivo
+     */
+    select?: ArchivoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Archivo
+     */
+    omit?: ArchivoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchivoInclude<ExtArgs> | null
+    where?: ArchivoWhereInput
+    orderBy?: ArchivoOrderByWithRelationInput | ArchivoOrderByWithRelationInput[]
+    cursor?: ArchivoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ArchivoScalarFieldEnum | ArchivoScalarFieldEnum[]
   }
 
   /**
@@ -6886,6 +7014,1121 @@ export namespace Prisma {
 
 
   /**
+   * Model Archivo
+   */
+
+  export type AggregateArchivo = {
+    _count: ArchivoCountAggregateOutputType | null
+    _avg: ArchivoAvgAggregateOutputType | null
+    _sum: ArchivoSumAggregateOutputType | null
+    _min: ArchivoMinAggregateOutputType | null
+    _max: ArchivoMaxAggregateOutputType | null
+  }
+
+  export type ArchivoAvgAggregateOutputType = {
+    id: number | null
+    productoId: number | null
+  }
+
+  export type ArchivoSumAggregateOutputType = {
+    id: number | null
+    productoId: number | null
+  }
+
+  export type ArchivoMinAggregateOutputType = {
+    id: number | null
+    nombre: string | null
+    extension: string | null
+    folder: string | null
+    productoId: number | null
+  }
+
+  export type ArchivoMaxAggregateOutputType = {
+    id: number | null
+    nombre: string | null
+    extension: string | null
+    folder: string | null
+    productoId: number | null
+  }
+
+  export type ArchivoCountAggregateOutputType = {
+    id: number
+    nombre: number
+    extension: number
+    folder: number
+    productoId: number
+    _all: number
+  }
+
+
+  export type ArchivoAvgAggregateInputType = {
+    id?: true
+    productoId?: true
+  }
+
+  export type ArchivoSumAggregateInputType = {
+    id?: true
+    productoId?: true
+  }
+
+  export type ArchivoMinAggregateInputType = {
+    id?: true
+    nombre?: true
+    extension?: true
+    folder?: true
+    productoId?: true
+  }
+
+  export type ArchivoMaxAggregateInputType = {
+    id?: true
+    nombre?: true
+    extension?: true
+    folder?: true
+    productoId?: true
+  }
+
+  export type ArchivoCountAggregateInputType = {
+    id?: true
+    nombre?: true
+    extension?: true
+    folder?: true
+    productoId?: true
+    _all?: true
+  }
+
+  export type ArchivoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Archivo to aggregate.
+     */
+    where?: ArchivoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Archivos to fetch.
+     */
+    orderBy?: ArchivoOrderByWithRelationInput | ArchivoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ArchivoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Archivos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Archivos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Archivos
+    **/
+    _count?: true | ArchivoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ArchivoAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ArchivoSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ArchivoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ArchivoMaxAggregateInputType
+  }
+
+  export type GetArchivoAggregateType<T extends ArchivoAggregateArgs> = {
+        [P in keyof T & keyof AggregateArchivo]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateArchivo[P]>
+      : GetScalarType<T[P], AggregateArchivo[P]>
+  }
+
+
+
+
+  export type ArchivoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ArchivoWhereInput
+    orderBy?: ArchivoOrderByWithAggregationInput | ArchivoOrderByWithAggregationInput[]
+    by: ArchivoScalarFieldEnum[] | ArchivoScalarFieldEnum
+    having?: ArchivoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ArchivoCountAggregateInputType | true
+    _avg?: ArchivoAvgAggregateInputType
+    _sum?: ArchivoSumAggregateInputType
+    _min?: ArchivoMinAggregateInputType
+    _max?: ArchivoMaxAggregateInputType
+  }
+
+  export type ArchivoGroupByOutputType = {
+    id: number
+    nombre: string
+    extension: string
+    folder: string
+    productoId: number | null
+    _count: ArchivoCountAggregateOutputType | null
+    _avg: ArchivoAvgAggregateOutputType | null
+    _sum: ArchivoSumAggregateOutputType | null
+    _min: ArchivoMinAggregateOutputType | null
+    _max: ArchivoMaxAggregateOutputType | null
+  }
+
+  type GetArchivoGroupByPayload<T extends ArchivoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ArchivoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ArchivoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ArchivoGroupByOutputType[P]>
+            : GetScalarType<T[P], ArchivoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ArchivoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    nombre?: boolean
+    extension?: boolean
+    folder?: boolean
+    productoId?: boolean
+    producto?: boolean | Archivo$productoArgs<ExtArgs>
+  }, ExtArgs["result"]["archivo"]>
+
+  export type ArchivoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    nombre?: boolean
+    extension?: boolean
+    folder?: boolean
+    productoId?: boolean
+    producto?: boolean | Archivo$productoArgs<ExtArgs>
+  }, ExtArgs["result"]["archivo"]>
+
+  export type ArchivoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    nombre?: boolean
+    extension?: boolean
+    folder?: boolean
+    productoId?: boolean
+    producto?: boolean | Archivo$productoArgs<ExtArgs>
+  }, ExtArgs["result"]["archivo"]>
+
+  export type ArchivoSelectScalar = {
+    id?: boolean
+    nombre?: boolean
+    extension?: boolean
+    folder?: boolean
+    productoId?: boolean
+  }
+
+  export type ArchivoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nombre" | "extension" | "folder" | "productoId", ExtArgs["result"]["archivo"]>
+  export type ArchivoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    producto?: boolean | Archivo$productoArgs<ExtArgs>
+  }
+  export type ArchivoIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    producto?: boolean | Archivo$productoArgs<ExtArgs>
+  }
+  export type ArchivoIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    producto?: boolean | Archivo$productoArgs<ExtArgs>
+  }
+
+  export type $ArchivoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Archivo"
+    objects: {
+      producto: Prisma.$ProductoPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      nombre: string
+      extension: string
+      folder: string
+      productoId: number | null
+    }, ExtArgs["result"]["archivo"]>
+    composites: {}
+  }
+
+  type ArchivoGetPayload<S extends boolean | null | undefined | ArchivoDefaultArgs> = $Result.GetResult<Prisma.$ArchivoPayload, S>
+
+  type ArchivoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ArchivoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ArchivoCountAggregateInputType | true
+    }
+
+  export interface ArchivoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Archivo'], meta: { name: 'Archivo' } }
+    /**
+     * Find zero or one Archivo that matches the filter.
+     * @param {ArchivoFindUniqueArgs} args - Arguments to find a Archivo
+     * @example
+     * // Get one Archivo
+     * const archivo = await prisma.archivo.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ArchivoFindUniqueArgs>(args: SelectSubset<T, ArchivoFindUniqueArgs<ExtArgs>>): Prisma__ArchivoClient<$Result.GetResult<Prisma.$ArchivoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Archivo that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ArchivoFindUniqueOrThrowArgs} args - Arguments to find a Archivo
+     * @example
+     * // Get one Archivo
+     * const archivo = await prisma.archivo.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ArchivoFindUniqueOrThrowArgs>(args: SelectSubset<T, ArchivoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ArchivoClient<$Result.GetResult<Prisma.$ArchivoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Archivo that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArchivoFindFirstArgs} args - Arguments to find a Archivo
+     * @example
+     * // Get one Archivo
+     * const archivo = await prisma.archivo.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ArchivoFindFirstArgs>(args?: SelectSubset<T, ArchivoFindFirstArgs<ExtArgs>>): Prisma__ArchivoClient<$Result.GetResult<Prisma.$ArchivoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Archivo that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArchivoFindFirstOrThrowArgs} args - Arguments to find a Archivo
+     * @example
+     * // Get one Archivo
+     * const archivo = await prisma.archivo.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ArchivoFindFirstOrThrowArgs>(args?: SelectSubset<T, ArchivoFindFirstOrThrowArgs<ExtArgs>>): Prisma__ArchivoClient<$Result.GetResult<Prisma.$ArchivoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Archivos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArchivoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Archivos
+     * const archivos = await prisma.archivo.findMany()
+     * 
+     * // Get first 10 Archivos
+     * const archivos = await prisma.archivo.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const archivoWithIdOnly = await prisma.archivo.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ArchivoFindManyArgs>(args?: SelectSubset<T, ArchivoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArchivoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Archivo.
+     * @param {ArchivoCreateArgs} args - Arguments to create a Archivo.
+     * @example
+     * // Create one Archivo
+     * const Archivo = await prisma.archivo.create({
+     *   data: {
+     *     // ... data to create a Archivo
+     *   }
+     * })
+     * 
+     */
+    create<T extends ArchivoCreateArgs>(args: SelectSubset<T, ArchivoCreateArgs<ExtArgs>>): Prisma__ArchivoClient<$Result.GetResult<Prisma.$ArchivoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Archivos.
+     * @param {ArchivoCreateManyArgs} args - Arguments to create many Archivos.
+     * @example
+     * // Create many Archivos
+     * const archivo = await prisma.archivo.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ArchivoCreateManyArgs>(args?: SelectSubset<T, ArchivoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Archivos and returns the data saved in the database.
+     * @param {ArchivoCreateManyAndReturnArgs} args - Arguments to create many Archivos.
+     * @example
+     * // Create many Archivos
+     * const archivo = await prisma.archivo.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Archivos and only return the `id`
+     * const archivoWithIdOnly = await prisma.archivo.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ArchivoCreateManyAndReturnArgs>(args?: SelectSubset<T, ArchivoCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArchivoPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Archivo.
+     * @param {ArchivoDeleteArgs} args - Arguments to delete one Archivo.
+     * @example
+     * // Delete one Archivo
+     * const Archivo = await prisma.archivo.delete({
+     *   where: {
+     *     // ... filter to delete one Archivo
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ArchivoDeleteArgs>(args: SelectSubset<T, ArchivoDeleteArgs<ExtArgs>>): Prisma__ArchivoClient<$Result.GetResult<Prisma.$ArchivoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Archivo.
+     * @param {ArchivoUpdateArgs} args - Arguments to update one Archivo.
+     * @example
+     * // Update one Archivo
+     * const archivo = await prisma.archivo.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ArchivoUpdateArgs>(args: SelectSubset<T, ArchivoUpdateArgs<ExtArgs>>): Prisma__ArchivoClient<$Result.GetResult<Prisma.$ArchivoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Archivos.
+     * @param {ArchivoDeleteManyArgs} args - Arguments to filter Archivos to delete.
+     * @example
+     * // Delete a few Archivos
+     * const { count } = await prisma.archivo.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ArchivoDeleteManyArgs>(args?: SelectSubset<T, ArchivoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Archivos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArchivoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Archivos
+     * const archivo = await prisma.archivo.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ArchivoUpdateManyArgs>(args: SelectSubset<T, ArchivoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Archivos and returns the data updated in the database.
+     * @param {ArchivoUpdateManyAndReturnArgs} args - Arguments to update many Archivos.
+     * @example
+     * // Update many Archivos
+     * const archivo = await prisma.archivo.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Archivos and only return the `id`
+     * const archivoWithIdOnly = await prisma.archivo.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ArchivoUpdateManyAndReturnArgs>(args: SelectSubset<T, ArchivoUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArchivoPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Archivo.
+     * @param {ArchivoUpsertArgs} args - Arguments to update or create a Archivo.
+     * @example
+     * // Update or create a Archivo
+     * const archivo = await prisma.archivo.upsert({
+     *   create: {
+     *     // ... data to create a Archivo
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Archivo we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ArchivoUpsertArgs>(args: SelectSubset<T, ArchivoUpsertArgs<ExtArgs>>): Prisma__ArchivoClient<$Result.GetResult<Prisma.$ArchivoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Archivos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArchivoCountArgs} args - Arguments to filter Archivos to count.
+     * @example
+     * // Count the number of Archivos
+     * const count = await prisma.archivo.count({
+     *   where: {
+     *     // ... the filter for the Archivos we want to count
+     *   }
+     * })
+    **/
+    count<T extends ArchivoCountArgs>(
+      args?: Subset<T, ArchivoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ArchivoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Archivo.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArchivoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ArchivoAggregateArgs>(args: Subset<T, ArchivoAggregateArgs>): Prisma.PrismaPromise<GetArchivoAggregateType<T>>
+
+    /**
+     * Group by Archivo.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArchivoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ArchivoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ArchivoGroupByArgs['orderBy'] }
+        : { orderBy?: ArchivoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ArchivoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetArchivoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Archivo model
+   */
+  readonly fields: ArchivoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Archivo.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ArchivoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    producto<T extends Archivo$productoArgs<ExtArgs> = {}>(args?: Subset<T, Archivo$productoArgs<ExtArgs>>): Prisma__ProductoClient<$Result.GetResult<Prisma.$ProductoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Archivo model
+   */
+  interface ArchivoFieldRefs {
+    readonly id: FieldRef<"Archivo", 'Int'>
+    readonly nombre: FieldRef<"Archivo", 'String'>
+    readonly extension: FieldRef<"Archivo", 'String'>
+    readonly folder: FieldRef<"Archivo", 'String'>
+    readonly productoId: FieldRef<"Archivo", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Archivo findUnique
+   */
+  export type ArchivoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Archivo
+     */
+    select?: ArchivoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Archivo
+     */
+    omit?: ArchivoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchivoInclude<ExtArgs> | null
+    /**
+     * Filter, which Archivo to fetch.
+     */
+    where: ArchivoWhereUniqueInput
+  }
+
+  /**
+   * Archivo findUniqueOrThrow
+   */
+  export type ArchivoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Archivo
+     */
+    select?: ArchivoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Archivo
+     */
+    omit?: ArchivoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchivoInclude<ExtArgs> | null
+    /**
+     * Filter, which Archivo to fetch.
+     */
+    where: ArchivoWhereUniqueInput
+  }
+
+  /**
+   * Archivo findFirst
+   */
+  export type ArchivoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Archivo
+     */
+    select?: ArchivoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Archivo
+     */
+    omit?: ArchivoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchivoInclude<ExtArgs> | null
+    /**
+     * Filter, which Archivo to fetch.
+     */
+    where?: ArchivoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Archivos to fetch.
+     */
+    orderBy?: ArchivoOrderByWithRelationInput | ArchivoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Archivos.
+     */
+    cursor?: ArchivoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Archivos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Archivos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Archivos.
+     */
+    distinct?: ArchivoScalarFieldEnum | ArchivoScalarFieldEnum[]
+  }
+
+  /**
+   * Archivo findFirstOrThrow
+   */
+  export type ArchivoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Archivo
+     */
+    select?: ArchivoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Archivo
+     */
+    omit?: ArchivoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchivoInclude<ExtArgs> | null
+    /**
+     * Filter, which Archivo to fetch.
+     */
+    where?: ArchivoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Archivos to fetch.
+     */
+    orderBy?: ArchivoOrderByWithRelationInput | ArchivoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Archivos.
+     */
+    cursor?: ArchivoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Archivos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Archivos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Archivos.
+     */
+    distinct?: ArchivoScalarFieldEnum | ArchivoScalarFieldEnum[]
+  }
+
+  /**
+   * Archivo findMany
+   */
+  export type ArchivoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Archivo
+     */
+    select?: ArchivoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Archivo
+     */
+    omit?: ArchivoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchivoInclude<ExtArgs> | null
+    /**
+     * Filter, which Archivos to fetch.
+     */
+    where?: ArchivoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Archivos to fetch.
+     */
+    orderBy?: ArchivoOrderByWithRelationInput | ArchivoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Archivos.
+     */
+    cursor?: ArchivoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Archivos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Archivos.
+     */
+    skip?: number
+    distinct?: ArchivoScalarFieldEnum | ArchivoScalarFieldEnum[]
+  }
+
+  /**
+   * Archivo create
+   */
+  export type ArchivoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Archivo
+     */
+    select?: ArchivoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Archivo
+     */
+    omit?: ArchivoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchivoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Archivo.
+     */
+    data: XOR<ArchivoCreateInput, ArchivoUncheckedCreateInput>
+  }
+
+  /**
+   * Archivo createMany
+   */
+  export type ArchivoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Archivos.
+     */
+    data: ArchivoCreateManyInput | ArchivoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Archivo createManyAndReturn
+   */
+  export type ArchivoCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Archivo
+     */
+    select?: ArchivoSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Archivo
+     */
+    omit?: ArchivoOmit<ExtArgs> | null
+    /**
+     * The data used to create many Archivos.
+     */
+    data: ArchivoCreateManyInput | ArchivoCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchivoIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Archivo update
+   */
+  export type ArchivoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Archivo
+     */
+    select?: ArchivoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Archivo
+     */
+    omit?: ArchivoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchivoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Archivo.
+     */
+    data: XOR<ArchivoUpdateInput, ArchivoUncheckedUpdateInput>
+    /**
+     * Choose, which Archivo to update.
+     */
+    where: ArchivoWhereUniqueInput
+  }
+
+  /**
+   * Archivo updateMany
+   */
+  export type ArchivoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Archivos.
+     */
+    data: XOR<ArchivoUpdateManyMutationInput, ArchivoUncheckedUpdateManyInput>
+    /**
+     * Filter which Archivos to update
+     */
+    where?: ArchivoWhereInput
+    /**
+     * Limit how many Archivos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Archivo updateManyAndReturn
+   */
+  export type ArchivoUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Archivo
+     */
+    select?: ArchivoSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Archivo
+     */
+    omit?: ArchivoOmit<ExtArgs> | null
+    /**
+     * The data used to update Archivos.
+     */
+    data: XOR<ArchivoUpdateManyMutationInput, ArchivoUncheckedUpdateManyInput>
+    /**
+     * Filter which Archivos to update
+     */
+    where?: ArchivoWhereInput
+    /**
+     * Limit how many Archivos to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchivoIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Archivo upsert
+   */
+  export type ArchivoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Archivo
+     */
+    select?: ArchivoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Archivo
+     */
+    omit?: ArchivoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchivoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Archivo to update in case it exists.
+     */
+    where: ArchivoWhereUniqueInput
+    /**
+     * In case the Archivo found by the `where` argument doesn't exist, create a new Archivo with this data.
+     */
+    create: XOR<ArchivoCreateInput, ArchivoUncheckedCreateInput>
+    /**
+     * In case the Archivo was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ArchivoUpdateInput, ArchivoUncheckedUpdateInput>
+  }
+
+  /**
+   * Archivo delete
+   */
+  export type ArchivoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Archivo
+     */
+    select?: ArchivoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Archivo
+     */
+    omit?: ArchivoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchivoInclude<ExtArgs> | null
+    /**
+     * Filter which Archivo to delete.
+     */
+    where: ArchivoWhereUniqueInput
+  }
+
+  /**
+   * Archivo deleteMany
+   */
+  export type ArchivoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Archivos to delete
+     */
+    where?: ArchivoWhereInput
+    /**
+     * Limit how many Archivos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Archivo.producto
+   */
+  export type Archivo$productoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Producto
+     */
+    select?: ProductoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Producto
+     */
+    omit?: ProductoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductoInclude<ExtArgs> | null
+    where?: ProductoWhereInput
+  }
+
+  /**
+   * Archivo without action
+   */
+  export type ArchivoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Archivo
+     */
+    select?: ArchivoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Archivo
+     */
+    omit?: ArchivoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArchivoInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -6955,6 +8198,17 @@ export namespace Prisma {
   };
 
   export type UsuarioScalarFieldEnum = (typeof UsuarioScalarFieldEnum)[keyof typeof UsuarioScalarFieldEnum]
+
+
+  export const ArchivoScalarFieldEnum: {
+    id: 'id',
+    nombre: 'nombre',
+    extension: 'extension',
+    folder: 'folder',
+    productoId: 'productoId'
+  };
+
+  export type ArchivoScalarFieldEnum = (typeof ArchivoScalarFieldEnum)[keyof typeof ArchivoScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -7091,6 +8345,7 @@ export namespace Prisma {
     disponible?: BoolFilter<"Producto"> | boolean
     cantidad?: IntFilter<"Producto"> | number
     detalleOperaciones?: DetalleOperacionListRelationFilter
+    archivos?: ArchivoListRelationFilter
   }
 
   export type ProductoOrderByWithRelationInput = {
@@ -7101,6 +8356,7 @@ export namespace Prisma {
     disponible?: SortOrder
     cantidad?: SortOrder
     detalleOperaciones?: DetalleOperacionOrderByRelationAggregateInput
+    archivos?: ArchivoOrderByRelationAggregateInput
   }
 
   export type ProductoWhereUniqueInput = Prisma.AtLeast<{
@@ -7114,6 +8370,7 @@ export namespace Prisma {
     disponible?: BoolFilter<"Producto"> | boolean
     cantidad?: IntFilter<"Producto"> | number
     detalleOperaciones?: DetalleOperacionListRelationFilter
+    archivos?: ArchivoListRelationFilter
   }, "id">
 
   export type ProductoOrderByWithAggregationInput = {
@@ -7383,6 +8640,63 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Usuario"> | Date | string
   }
 
+  export type ArchivoWhereInput = {
+    AND?: ArchivoWhereInput | ArchivoWhereInput[]
+    OR?: ArchivoWhereInput[]
+    NOT?: ArchivoWhereInput | ArchivoWhereInput[]
+    id?: IntFilter<"Archivo"> | number
+    nombre?: StringFilter<"Archivo"> | string
+    extension?: StringFilter<"Archivo"> | string
+    folder?: StringFilter<"Archivo"> | string
+    productoId?: IntNullableFilter<"Archivo"> | number | null
+    producto?: XOR<ProductoNullableScalarRelationFilter, ProductoWhereInput> | null
+  }
+
+  export type ArchivoOrderByWithRelationInput = {
+    id?: SortOrder
+    nombre?: SortOrder
+    extension?: SortOrder
+    folder?: SortOrder
+    productoId?: SortOrderInput | SortOrder
+    producto?: ProductoOrderByWithRelationInput
+  }
+
+  export type ArchivoWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: ArchivoWhereInput | ArchivoWhereInput[]
+    OR?: ArchivoWhereInput[]
+    NOT?: ArchivoWhereInput | ArchivoWhereInput[]
+    nombre?: StringFilter<"Archivo"> | string
+    extension?: StringFilter<"Archivo"> | string
+    folder?: StringFilter<"Archivo"> | string
+    productoId?: IntNullableFilter<"Archivo"> | number | null
+    producto?: XOR<ProductoNullableScalarRelationFilter, ProductoWhereInput> | null
+  }, "id">
+
+  export type ArchivoOrderByWithAggregationInput = {
+    id?: SortOrder
+    nombre?: SortOrder
+    extension?: SortOrder
+    folder?: SortOrder
+    productoId?: SortOrderInput | SortOrder
+    _count?: ArchivoCountOrderByAggregateInput
+    _avg?: ArchivoAvgOrderByAggregateInput
+    _max?: ArchivoMaxOrderByAggregateInput
+    _min?: ArchivoMinOrderByAggregateInput
+    _sum?: ArchivoSumOrderByAggregateInput
+  }
+
+  export type ArchivoScalarWhereWithAggregatesInput = {
+    AND?: ArchivoScalarWhereWithAggregatesInput | ArchivoScalarWhereWithAggregatesInput[]
+    OR?: ArchivoScalarWhereWithAggregatesInput[]
+    NOT?: ArchivoScalarWhereWithAggregatesInput | ArchivoScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Archivo"> | number
+    nombre?: StringWithAggregatesFilter<"Archivo"> | string
+    extension?: StringWithAggregatesFilter<"Archivo"> | string
+    folder?: StringWithAggregatesFilter<"Archivo"> | string
+    productoId?: IntNullableWithAggregatesFilter<"Archivo"> | number | null
+  }
+
   export type ProductoCreateInput = {
     nombre: string
     descripcion?: string | null
@@ -7390,6 +8704,7 @@ export namespace Prisma {
     disponible?: boolean
     cantidad: number
     detalleOperaciones?: DetalleOperacionCreateNestedManyWithoutProductoInput
+    archivos?: ArchivoCreateNestedManyWithoutProductoInput
   }
 
   export type ProductoUncheckedCreateInput = {
@@ -7400,6 +8715,7 @@ export namespace Prisma {
     disponible?: boolean
     cantidad: number
     detalleOperaciones?: DetalleOperacionUncheckedCreateNestedManyWithoutProductoInput
+    archivos?: ArchivoUncheckedCreateNestedManyWithoutProductoInput
   }
 
   export type ProductoUpdateInput = {
@@ -7409,6 +8725,7 @@ export namespace Prisma {
     disponible?: BoolFieldUpdateOperationsInput | boolean
     cantidad?: IntFieldUpdateOperationsInput | number
     detalleOperaciones?: DetalleOperacionUpdateManyWithoutProductoNestedInput
+    archivos?: ArchivoUpdateManyWithoutProductoNestedInput
   }
 
   export type ProductoUncheckedUpdateInput = {
@@ -7419,6 +8736,7 @@ export namespace Prisma {
     disponible?: BoolFieldUpdateOperationsInput | boolean
     cantidad?: IntFieldUpdateOperationsInput | number
     detalleOperaciones?: DetalleOperacionUncheckedUpdateManyWithoutProductoNestedInput
+    archivos?: ArchivoUncheckedUpdateManyWithoutProductoNestedInput
   }
 
   export type ProductoCreateManyInput = {
@@ -7678,6 +8996,58 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ArchivoCreateInput = {
+    nombre: string
+    extension: string
+    folder: string
+    producto?: ProductoCreateNestedOneWithoutArchivosInput
+  }
+
+  export type ArchivoUncheckedCreateInput = {
+    id?: number
+    nombre: string
+    extension: string
+    folder: string
+    productoId?: number | null
+  }
+
+  export type ArchivoUpdateInput = {
+    nombre?: StringFieldUpdateOperationsInput | string
+    extension?: StringFieldUpdateOperationsInput | string
+    folder?: StringFieldUpdateOperationsInput | string
+    producto?: ProductoUpdateOneWithoutArchivosNestedInput
+  }
+
+  export type ArchivoUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nombre?: StringFieldUpdateOperationsInput | string
+    extension?: StringFieldUpdateOperationsInput | string
+    folder?: StringFieldUpdateOperationsInput | string
+    productoId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type ArchivoCreateManyInput = {
+    id?: number
+    nombre: string
+    extension: string
+    folder: string
+    productoId?: number | null
+  }
+
+  export type ArchivoUpdateManyMutationInput = {
+    nombre?: StringFieldUpdateOperationsInput | string
+    extension?: StringFieldUpdateOperationsInput | string
+    folder?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ArchivoUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nombre?: StringFieldUpdateOperationsInput | string
+    extension?: StringFieldUpdateOperationsInput | string
+    folder?: StringFieldUpdateOperationsInput | string
+    productoId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -7741,12 +9111,22 @@ export namespace Prisma {
     none?: DetalleOperacionWhereInput
   }
 
+  export type ArchivoListRelationFilter = {
+    every?: ArchivoWhereInput
+    some?: ArchivoWhereInput
+    none?: ArchivoWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
   }
 
   export type DetalleOperacionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ArchivoOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -8122,6 +9502,72 @@ export namespace Prisma {
     _max?: NestedEnumTipoUsuarioFilter<$PrismaModel>
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type ProductoNullableScalarRelationFilter = {
+    is?: ProductoWhereInput | null
+    isNot?: ProductoWhereInput | null
+  }
+
+  export type ArchivoCountOrderByAggregateInput = {
+    id?: SortOrder
+    nombre?: SortOrder
+    extension?: SortOrder
+    folder?: SortOrder
+    productoId?: SortOrder
+  }
+
+  export type ArchivoAvgOrderByAggregateInput = {
+    id?: SortOrder
+    productoId?: SortOrder
+  }
+
+  export type ArchivoMaxOrderByAggregateInput = {
+    id?: SortOrder
+    nombre?: SortOrder
+    extension?: SortOrder
+    folder?: SortOrder
+    productoId?: SortOrder
+  }
+
+  export type ArchivoMinOrderByAggregateInput = {
+    id?: SortOrder
+    nombre?: SortOrder
+    extension?: SortOrder
+    folder?: SortOrder
+    productoId?: SortOrder
+  }
+
+  export type ArchivoSumOrderByAggregateInput = {
+    id?: SortOrder
+    productoId?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
   export type DetalleOperacionCreateNestedManyWithoutProductoInput = {
     create?: XOR<DetalleOperacionCreateWithoutProductoInput, DetalleOperacionUncheckedCreateWithoutProductoInput> | DetalleOperacionCreateWithoutProductoInput[] | DetalleOperacionUncheckedCreateWithoutProductoInput[]
     connectOrCreate?: DetalleOperacionCreateOrConnectWithoutProductoInput | DetalleOperacionCreateOrConnectWithoutProductoInput[]
@@ -8129,11 +9575,25 @@ export namespace Prisma {
     connect?: DetalleOperacionWhereUniqueInput | DetalleOperacionWhereUniqueInput[]
   }
 
+  export type ArchivoCreateNestedManyWithoutProductoInput = {
+    create?: XOR<ArchivoCreateWithoutProductoInput, ArchivoUncheckedCreateWithoutProductoInput> | ArchivoCreateWithoutProductoInput[] | ArchivoUncheckedCreateWithoutProductoInput[]
+    connectOrCreate?: ArchivoCreateOrConnectWithoutProductoInput | ArchivoCreateOrConnectWithoutProductoInput[]
+    createMany?: ArchivoCreateManyProductoInputEnvelope
+    connect?: ArchivoWhereUniqueInput | ArchivoWhereUniqueInput[]
+  }
+
   export type DetalleOperacionUncheckedCreateNestedManyWithoutProductoInput = {
     create?: XOR<DetalleOperacionCreateWithoutProductoInput, DetalleOperacionUncheckedCreateWithoutProductoInput> | DetalleOperacionCreateWithoutProductoInput[] | DetalleOperacionUncheckedCreateWithoutProductoInput[]
     connectOrCreate?: DetalleOperacionCreateOrConnectWithoutProductoInput | DetalleOperacionCreateOrConnectWithoutProductoInput[]
     createMany?: DetalleOperacionCreateManyProductoInputEnvelope
     connect?: DetalleOperacionWhereUniqueInput | DetalleOperacionWhereUniqueInput[]
+  }
+
+  export type ArchivoUncheckedCreateNestedManyWithoutProductoInput = {
+    create?: XOR<ArchivoCreateWithoutProductoInput, ArchivoUncheckedCreateWithoutProductoInput> | ArchivoCreateWithoutProductoInput[] | ArchivoUncheckedCreateWithoutProductoInput[]
+    connectOrCreate?: ArchivoCreateOrConnectWithoutProductoInput | ArchivoCreateOrConnectWithoutProductoInput[]
+    createMany?: ArchivoCreateManyProductoInputEnvelope
+    connect?: ArchivoWhereUniqueInput | ArchivoWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -8178,6 +9638,20 @@ export namespace Prisma {
     deleteMany?: DetalleOperacionScalarWhereInput | DetalleOperacionScalarWhereInput[]
   }
 
+  export type ArchivoUpdateManyWithoutProductoNestedInput = {
+    create?: XOR<ArchivoCreateWithoutProductoInput, ArchivoUncheckedCreateWithoutProductoInput> | ArchivoCreateWithoutProductoInput[] | ArchivoUncheckedCreateWithoutProductoInput[]
+    connectOrCreate?: ArchivoCreateOrConnectWithoutProductoInput | ArchivoCreateOrConnectWithoutProductoInput[]
+    upsert?: ArchivoUpsertWithWhereUniqueWithoutProductoInput | ArchivoUpsertWithWhereUniqueWithoutProductoInput[]
+    createMany?: ArchivoCreateManyProductoInputEnvelope
+    set?: ArchivoWhereUniqueInput | ArchivoWhereUniqueInput[]
+    disconnect?: ArchivoWhereUniqueInput | ArchivoWhereUniqueInput[]
+    delete?: ArchivoWhereUniqueInput | ArchivoWhereUniqueInput[]
+    connect?: ArchivoWhereUniqueInput | ArchivoWhereUniqueInput[]
+    update?: ArchivoUpdateWithWhereUniqueWithoutProductoInput | ArchivoUpdateWithWhereUniqueWithoutProductoInput[]
+    updateMany?: ArchivoUpdateManyWithWhereWithoutProductoInput | ArchivoUpdateManyWithWhereWithoutProductoInput[]
+    deleteMany?: ArchivoScalarWhereInput | ArchivoScalarWhereInput[]
+  }
+
   export type DetalleOperacionUncheckedUpdateManyWithoutProductoNestedInput = {
     create?: XOR<DetalleOperacionCreateWithoutProductoInput, DetalleOperacionUncheckedCreateWithoutProductoInput> | DetalleOperacionCreateWithoutProductoInput[] | DetalleOperacionUncheckedCreateWithoutProductoInput[]
     connectOrCreate?: DetalleOperacionCreateOrConnectWithoutProductoInput | DetalleOperacionCreateOrConnectWithoutProductoInput[]
@@ -8190,6 +9664,20 @@ export namespace Prisma {
     update?: DetalleOperacionUpdateWithWhereUniqueWithoutProductoInput | DetalleOperacionUpdateWithWhereUniqueWithoutProductoInput[]
     updateMany?: DetalleOperacionUpdateManyWithWhereWithoutProductoInput | DetalleOperacionUpdateManyWithWhereWithoutProductoInput[]
     deleteMany?: DetalleOperacionScalarWhereInput | DetalleOperacionScalarWhereInput[]
+  }
+
+  export type ArchivoUncheckedUpdateManyWithoutProductoNestedInput = {
+    create?: XOR<ArchivoCreateWithoutProductoInput, ArchivoUncheckedCreateWithoutProductoInput> | ArchivoCreateWithoutProductoInput[] | ArchivoUncheckedCreateWithoutProductoInput[]
+    connectOrCreate?: ArchivoCreateOrConnectWithoutProductoInput | ArchivoCreateOrConnectWithoutProductoInput[]
+    upsert?: ArchivoUpsertWithWhereUniqueWithoutProductoInput | ArchivoUpsertWithWhereUniqueWithoutProductoInput[]
+    createMany?: ArchivoCreateManyProductoInputEnvelope
+    set?: ArchivoWhereUniqueInput | ArchivoWhereUniqueInput[]
+    disconnect?: ArchivoWhereUniqueInput | ArchivoWhereUniqueInput[]
+    delete?: ArchivoWhereUniqueInput | ArchivoWhereUniqueInput[]
+    connect?: ArchivoWhereUniqueInput | ArchivoWhereUniqueInput[]
+    update?: ArchivoUpdateWithWhereUniqueWithoutProductoInput | ArchivoUpdateWithWhereUniqueWithoutProductoInput[]
+    updateMany?: ArchivoUpdateManyWithWhereWithoutProductoInput | ArchivoUpdateManyWithWhereWithoutProductoInput[]
+    deleteMany?: ArchivoScalarWhereInput | ArchivoScalarWhereInput[]
   }
 
   export type OperacionCreateNestedManyWithoutClienteInput = {
@@ -8336,6 +9824,30 @@ export namespace Prisma {
 
   export type EnumTipoUsuarioFieldUpdateOperationsInput = {
     set?: $Enums.TipoUsuario
+  }
+
+  export type ProductoCreateNestedOneWithoutArchivosInput = {
+    create?: XOR<ProductoCreateWithoutArchivosInput, ProductoUncheckedCreateWithoutArchivosInput>
+    connectOrCreate?: ProductoCreateOrConnectWithoutArchivosInput
+    connect?: ProductoWhereUniqueInput
+  }
+
+  export type ProductoUpdateOneWithoutArchivosNestedInput = {
+    create?: XOR<ProductoCreateWithoutArchivosInput, ProductoUncheckedCreateWithoutArchivosInput>
+    connectOrCreate?: ProductoCreateOrConnectWithoutArchivosInput
+    upsert?: ProductoUpsertWithoutArchivosInput
+    disconnect?: ProductoWhereInput | boolean
+    delete?: ProductoWhereInput | boolean
+    connect?: ProductoWhereUniqueInput
+    update?: XOR<XOR<ProductoUpdateToOneWithWhereWithoutArchivosInput, ProductoUpdateWithoutArchivosInput>, ProductoUncheckedUpdateWithoutArchivosInput>
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -8564,6 +10076,22 @@ export namespace Prisma {
     _max?: NestedEnumTipoUsuarioFilter<$PrismaModel>
   }
 
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
   export type DetalleOperacionCreateWithoutProductoInput = {
     cantidad: number
     subTotal: number
@@ -8584,6 +10112,29 @@ export namespace Prisma {
 
   export type DetalleOperacionCreateManyProductoInputEnvelope = {
     data: DetalleOperacionCreateManyProductoInput | DetalleOperacionCreateManyProductoInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ArchivoCreateWithoutProductoInput = {
+    nombre: string
+    extension: string
+    folder: string
+  }
+
+  export type ArchivoUncheckedCreateWithoutProductoInput = {
+    id?: number
+    nombre: string
+    extension: string
+    folder: string
+  }
+
+  export type ArchivoCreateOrConnectWithoutProductoInput = {
+    where: ArchivoWhereUniqueInput
+    create: XOR<ArchivoCreateWithoutProductoInput, ArchivoUncheckedCreateWithoutProductoInput>
+  }
+
+  export type ArchivoCreateManyProductoInputEnvelope = {
+    data: ArchivoCreateManyProductoInput | ArchivoCreateManyProductoInput[]
     skipDuplicates?: boolean
   }
 
@@ -8612,6 +10163,33 @@ export namespace Prisma {
     subTotal?: FloatFilter<"DetalleOperacion"> | number
     productoId?: IntFilter<"DetalleOperacion"> | number
     operacionId?: IntFilter<"DetalleOperacion"> | number
+  }
+
+  export type ArchivoUpsertWithWhereUniqueWithoutProductoInput = {
+    where: ArchivoWhereUniqueInput
+    update: XOR<ArchivoUpdateWithoutProductoInput, ArchivoUncheckedUpdateWithoutProductoInput>
+    create: XOR<ArchivoCreateWithoutProductoInput, ArchivoUncheckedCreateWithoutProductoInput>
+  }
+
+  export type ArchivoUpdateWithWhereUniqueWithoutProductoInput = {
+    where: ArchivoWhereUniqueInput
+    data: XOR<ArchivoUpdateWithoutProductoInput, ArchivoUncheckedUpdateWithoutProductoInput>
+  }
+
+  export type ArchivoUpdateManyWithWhereWithoutProductoInput = {
+    where: ArchivoScalarWhereInput
+    data: XOR<ArchivoUpdateManyMutationInput, ArchivoUncheckedUpdateManyWithoutProductoInput>
+  }
+
+  export type ArchivoScalarWhereInput = {
+    AND?: ArchivoScalarWhereInput | ArchivoScalarWhereInput[]
+    OR?: ArchivoScalarWhereInput[]
+    NOT?: ArchivoScalarWhereInput | ArchivoScalarWhereInput[]
+    id?: IntFilter<"Archivo"> | number
+    nombre?: StringFilter<"Archivo"> | string
+    extension?: StringFilter<"Archivo"> | string
+    folder?: StringFilter<"Archivo"> | string
+    productoId?: IntNullableFilter<"Archivo"> | number | null
   }
 
   export type OperacionCreateWithoutClienteInput = {
@@ -8758,6 +10336,7 @@ export namespace Prisma {
     precio: number
     disponible?: boolean
     cantidad: number
+    archivos?: ArchivoCreateNestedManyWithoutProductoInput
   }
 
   export type ProductoUncheckedCreateWithoutDetalleOperacionesInput = {
@@ -8767,6 +10346,7 @@ export namespace Prisma {
     precio: number
     disponible?: boolean
     cantidad: number
+    archivos?: ArchivoUncheckedCreateNestedManyWithoutProductoInput
   }
 
   export type ProductoCreateOrConnectWithoutDetalleOperacionesInput = {
@@ -8809,6 +10389,7 @@ export namespace Prisma {
     precio?: FloatFieldUpdateOperationsInput | number
     disponible?: BoolFieldUpdateOperationsInput | boolean
     cantidad?: IntFieldUpdateOperationsInput | number
+    archivos?: ArchivoUpdateManyWithoutProductoNestedInput
   }
 
   export type ProductoUncheckedUpdateWithoutDetalleOperacionesInput = {
@@ -8818,6 +10399,7 @@ export namespace Prisma {
     precio?: FloatFieldUpdateOperationsInput | number
     disponible?: BoolFieldUpdateOperationsInput | boolean
     cantidad?: IntFieldUpdateOperationsInput | number
+    archivos?: ArchivoUncheckedUpdateManyWithoutProductoNestedInput
   }
 
   export type OperacionUpsertWithoutDetalleOperacionesInput = {
@@ -8844,11 +10426,72 @@ export namespace Prisma {
     clienteId?: IntFieldUpdateOperationsInput | number
   }
 
+  export type ProductoCreateWithoutArchivosInput = {
+    nombre: string
+    descripcion?: string | null
+    precio: number
+    disponible?: boolean
+    cantidad: number
+    detalleOperaciones?: DetalleOperacionCreateNestedManyWithoutProductoInput
+  }
+
+  export type ProductoUncheckedCreateWithoutArchivosInput = {
+    id?: number
+    nombre: string
+    descripcion?: string | null
+    precio: number
+    disponible?: boolean
+    cantidad: number
+    detalleOperaciones?: DetalleOperacionUncheckedCreateNestedManyWithoutProductoInput
+  }
+
+  export type ProductoCreateOrConnectWithoutArchivosInput = {
+    where: ProductoWhereUniqueInput
+    create: XOR<ProductoCreateWithoutArchivosInput, ProductoUncheckedCreateWithoutArchivosInput>
+  }
+
+  export type ProductoUpsertWithoutArchivosInput = {
+    update: XOR<ProductoUpdateWithoutArchivosInput, ProductoUncheckedUpdateWithoutArchivosInput>
+    create: XOR<ProductoCreateWithoutArchivosInput, ProductoUncheckedCreateWithoutArchivosInput>
+    where?: ProductoWhereInput
+  }
+
+  export type ProductoUpdateToOneWithWhereWithoutArchivosInput = {
+    where?: ProductoWhereInput
+    data: XOR<ProductoUpdateWithoutArchivosInput, ProductoUncheckedUpdateWithoutArchivosInput>
+  }
+
+  export type ProductoUpdateWithoutArchivosInput = {
+    nombre?: StringFieldUpdateOperationsInput | string
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
+    precio?: FloatFieldUpdateOperationsInput | number
+    disponible?: BoolFieldUpdateOperationsInput | boolean
+    cantidad?: IntFieldUpdateOperationsInput | number
+    detalleOperaciones?: DetalleOperacionUpdateManyWithoutProductoNestedInput
+  }
+
+  export type ProductoUncheckedUpdateWithoutArchivosInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nombre?: StringFieldUpdateOperationsInput | string
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
+    precio?: FloatFieldUpdateOperationsInput | number
+    disponible?: BoolFieldUpdateOperationsInput | boolean
+    cantidad?: IntFieldUpdateOperationsInput | number
+    detalleOperaciones?: DetalleOperacionUncheckedUpdateManyWithoutProductoNestedInput
+  }
+
   export type DetalleOperacionCreateManyProductoInput = {
     id?: number
     cantidad: number
     subTotal: number
     operacionId: number
+  }
+
+  export type ArchivoCreateManyProductoInput = {
+    id?: number
+    nombre: string
+    extension: string
+    folder: string
   }
 
   export type DetalleOperacionUpdateWithoutProductoInput = {
@@ -8869,6 +10512,26 @@ export namespace Prisma {
     cantidad?: IntFieldUpdateOperationsInput | number
     subTotal?: FloatFieldUpdateOperationsInput | number
     operacionId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ArchivoUpdateWithoutProductoInput = {
+    nombre?: StringFieldUpdateOperationsInput | string
+    extension?: StringFieldUpdateOperationsInput | string
+    folder?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ArchivoUncheckedUpdateWithoutProductoInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nombre?: StringFieldUpdateOperationsInput | string
+    extension?: StringFieldUpdateOperationsInput | string
+    folder?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ArchivoUncheckedUpdateManyWithoutProductoInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    nombre?: StringFieldUpdateOperationsInput | string
+    extension?: StringFieldUpdateOperationsInput | string
+    folder?: StringFieldUpdateOperationsInput | string
   }
 
   export type OperacionCreateManyClienteInput = {

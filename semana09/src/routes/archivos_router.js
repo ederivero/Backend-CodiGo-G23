@@ -1,6 +1,9 @@
 import { Router } from "express";
 import multer from "multer";
-import { subirArchivo } from "../controllers/archivos_controller.js";
+import {
+  devolverArchivo,
+  subirArchivo,
+} from "../controllers/archivos_controller.js";
 
 const middlewareArchivos = multer({
   storage: multer.memoryStorage(),
@@ -22,3 +25,5 @@ archivosRouter.post(
   middlewareArchivos.single("archivo"),
   subirArchivo
 );
+
+archivosRouter.get("/devolver-archivo", devolverArchivo);

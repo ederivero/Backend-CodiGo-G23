@@ -163,6 +163,14 @@ exports.Prisma.UsuarioScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ArchivoScalarFieldEnum = {
+  id: 'id',
+  nombre: 'nombre',
+  extension: 'extension',
+  folder: 'folder',
+  productoId: 'productoId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -193,7 +201,8 @@ exports.Prisma.ModelName = {
   Cliente: 'Cliente',
   Operacion: 'Operacion',
   DetalleOperacion: 'DetalleOperacion',
-  Usuario: 'Usuario'
+  Usuario: 'Usuario',
+  Archivo: 'Archivo'
 };
 
 /**
