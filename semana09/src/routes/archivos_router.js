@@ -2,6 +2,8 @@ import { Router } from "express";
 import multer from "multer";
 import {
   devolverArchivo,
+  eliminarArchivo,
+  generarUrlDelBucket,
   subirArchivo,
 } from "../controllers/archivos_controller.js";
 
@@ -27,3 +29,7 @@ archivosRouter.post(
 );
 
 archivosRouter.get("/devolver-archivo", devolverArchivo);
+
+archivosRouter.post("/generar-url", generarUrlDelBucket);
+
+archivosRouter.delete("/archivo/:id", eliminarArchivo);
