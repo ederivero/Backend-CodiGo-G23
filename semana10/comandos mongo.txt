@@ -1,0 +1,19 @@
+mongosh             > para conectarse a la bd desde la terminal
+show dbs            > muestra todas las bases de datos que existen en el servidor
+use DATABASE_NAME   > para usar una bd existente y sino, creara una nueva
+db                  > mostrara la bd en la cual me encuentro
+
+# Comandos para el CRUD
+db.NOMBRE_COLECCION.insertOne({ DATA })     > insertara un registro en la coleccion indicada
+db.NOMBRE_COLECCION.insertMany([{ DATA }])  > insertara varios registros en la coleccion indicada
+db.NOMBRE_COLECCION.find()                  > devuelve todos los registros de la coleccion
+db.NOMBRE_COLECCION.find({ FILTROS })       > devuelve todos los registro que hagan match con el filtro
+
+db.usuarios.updateOne({ CONDICION }, {$set: { NUEVOS_VALORES }}) > actualizara el registro en base a la condicion
+db.usuarios.updateMany({ CONDICION }, {$set: { NUEVOS_VALORES }}) 
+
+db.usuarios.deleteMany({ CONDICION }) > eliminara todos los registros que cumplan con la condicion 
+
+db.usuarios.drop()  > elimina toda la informacion de la coleccion y la coleccion 
+
+db.dropDatabase()   > elimina la base de datos y todas sus colecciones CUIDADO!
