@@ -11,7 +11,6 @@ const usuarioSchema = new Schema({
     type: Schema.Types.String,
     set: (valor) => {
       // Cuando quiero guardar el registro en mi bd antes de guardarlo se llama al set
-
       const salt = genSaltSync();
       const hashPassword = hashSync(valor, salt);
 

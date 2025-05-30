@@ -2,7 +2,7 @@ import express from "express";
 import { connect } from "mongoose";
 import { config } from "dotenv";
 import { usuarioRouter } from "./routes/usuarios_routes.js";
-
+import { notasRouter } from "./routes/notas_routes.js";
 config();
 
 const servidor = express();
@@ -11,6 +11,7 @@ const PORT = process.env.PORT;
 servidor.use(express.json());
 
 servidor.use(usuarioRouter);
+servidor.use(notasRouter);
 
 servidor.listen(PORT, async () => {
   try {

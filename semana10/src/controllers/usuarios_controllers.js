@@ -90,13 +90,9 @@ export const cambiarPassword = async (req, res) => {
   );
 
   if (esLaPassword) {
-    const salt = genSaltSync();
-    const nuevaPasswordHashed = hashSync(serializador.data.nuevaPassword, salt);
-
-    // Ahora actualizamos el registro en la bd
     await UsuarioModel.updateOne(
       { _id: req.user._id },
-      { password: nuevaPasswordHashed }
+      { $set: { password: serializador.data.nuevaPassword } }
     );
 
     return res.json({
