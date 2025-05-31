@@ -58,7 +58,8 @@ export const login = async (req, res) => {
   if (esLaPassword) {
     const token = JWT.sign(
       { usuarioId: usuarioEncontrado._id },
-      process.env.JWT_SECRET_KEY
+      process.env.JWT_SECRET_KEY,
+      { expiresIn: 3600 }
     );
 
     return res.json({

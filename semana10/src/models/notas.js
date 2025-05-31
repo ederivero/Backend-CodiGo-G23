@@ -14,6 +14,10 @@ const NotasSchema = Schema({
     type: Schema.Types.Int32,
     min: 0,
   },
+  etiquetas: {
+    type: Schema.Types.Array,
+    default: [],
+  },
   usuarioId: {
     type: Schema.Types.ObjectId,
     required: true,
